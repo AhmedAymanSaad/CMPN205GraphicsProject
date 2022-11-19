@@ -32,7 +32,14 @@ namespace our {
         friend Application;
     public:
         virtual void onInitialize(){}                   // Called once before the game loop.
-        virtual void onImmediateGui(){}                 // Called every frame to draw the Immediate GUI (if any).
+        virtual void onImmediateGui(){                  // Called every frame to draw the Immediate GUI (if any).
+            int id = 1180485;
+            float r = (id % 100) / 100.0f;
+            float g = ((id / 100) % 100 )/ 100.0f;
+            float b = ((id / 1000) % 100 )/ 100.0f;
+            glClearColor(r, g, b, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+        }                 
         virtual void onDraw(double deltaTime){}         // Called every frame in the game loop passing the time taken to draw the frame "Delta time".
         virtual void onDestroy(){}                      // Called once after the game loop ends for house cleaning.
 
