@@ -36,7 +36,7 @@ namespace our {
             //TODO: (Req 8) Create an component of type T, set its "owner" to be this entity, then push it into the component's list
             // Don't forget to return a pointer to the new component
 
-            Component* component = new T(); //What if T does not inherit from Component?
+            T* component = new T(); //What if T does not inherit from Component?
             component->owner = this;
             components.push_back(component);
 
