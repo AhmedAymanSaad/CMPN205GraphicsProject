@@ -67,7 +67,7 @@ namespace our {
             glGenTextures(1, &texture_map);
             glBindTexture(GL_TEXTURE_2D, texture_map);
 
-            GLuint mip_levels = glm::floor(glm::log2(glm::max<float>(windowSize.x, windowSize.y))) + 1;
+            GLuint mip_levels = GLuint(glm::floor(glm::log2(glm::max<float>(float(windowSize.x), float(windowSize.y)))) + 1);
             glTexStorage2D(GL_TEXTURE_2D, mip_levels, GL_RGBA8, windowSize.x, windowSize.y);
             glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_map, 0);
 
