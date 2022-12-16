@@ -19,5 +19,5 @@ void main(){
     for(int i = 0; i < STEPS; i++){
         frag_color += texture(tex, tex_coord + step_vector * i);    
     }
-    frag_color /= STEPS;
+    frag_color = frag_color_temp/STEPS;
 }

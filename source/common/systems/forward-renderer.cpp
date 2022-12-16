@@ -59,7 +59,7 @@ namespace our {
             //TODO: (Req 11) Create a framebuffer
             GLuint fb;
             glGenFramebuffers(1, &fb);
-            glBindFramebuffer(GL_FRAMEBUFFER, fb);
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb);
             //TODO: (Req 11) Create a color and a depth texture and attach them to the framebuffer
             // Hints: The color format can be (Red, Green, Blue and Alpha components with 8 bits for each channel).
             // The depth format can be (Depth component with 24 bits).
@@ -251,10 +251,14 @@ namespace our {
         // If there is a postprocess material, apply postprocessing
         if(postprocessMaterial){
             //TODO: (Req 11) Return to the default framebuffer
-            glBindFramebuffer(GL_FRAMEBUFFER, postprocessFrameBuffer);
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
             //TODO: (Req 11) Setup the postprocess material and draw the fullscreen triangle
             postprocessMaterial->setup();
-            postprocessMaterial->texture = colorTarget;
+            // screenShader.use();  
+            // glBindVertexArray(quadVAO);
+            // glDisable(GL_DEPTH_TEST);
+            glBindTexture(GL_TEXTURE_2D, postProcessVertexArray);
+            glDrawArrays(GL_TRIANGLES, 0, 6);  
         }
     }
 
