@@ -58,19 +58,31 @@ namespace our {
         // Then we check if there is a postprocessing shader in the configuration
         if(config.contains("postprocess")){
             //TODO: (Req 11) Create a framebuffer
-            glGenFramebuffers(1, &this->postprocessFBO);
-            glBindFramebuffer(GL_FRAMEBUFFER, this->postprocessFBO);
+            glGenFramebuffers(1, &this->postprocessFrameBuffer);
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->postprocessFrameBuffer);
 
             //TODO: (Req 11) Create a color and a depth texture and attach them to the framebuffer
             // Hints: The color format can be (Red, Green, Blue and Alpha components with 8 bits for each channel).
             // The depth format can be (Depth component with 24 bits)
 
-            glGenTextures(1, &this->colorTarget);
-            glBindTexture(GL_TEXTURE_2D, this->colorTarget);
-            glFramebufferTexture2D(GL_FR)
+            // Color Attactment
+            auto colorTarget2 = this->colorTarget->getOpenGLName() ;
+            glGenTextures(1, &colorTarget2 );
+            glBindTexture(GL_TEXTURE_2D, this->colorTarget->getOpenGLName());
+
+            GLuint mip_levels = glm::floor(glm::log2(glm::max<float>(windowSize.x,windowSize.y))) + 1;
+            glTexImage2D(GL_TEXTURE_2D, mip_levels, GL_RGBA8, windowSize.x, windowSize.y, 0, GL_RGBA8, GL_UNSIGNED_BYTE, NULL);
+            glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->colorTarget->getOpenGLName(), 0);   
+
+            // Depth Attachment
+            auto depthTarget2 = this->depthTarget->getOpenGLName();
+            glGenTextures(1, &depthTarget2);
+            glBindTexture(GL_TEXTURE_2D, this->depthTarget->getOpenGLName());
+            glTexImage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT24, windowSize.x, windowSize.y, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+            glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, this->depthTarget->getOpenGLName(), 0);
             
             //TODO: (Req 11) Unbind the framebuffer just to be safe
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 
             // Create a vertex array to use for drawing the texture
             glGenVertexArrays(1, &postProcessVertexArray);
@@ -180,6 +192,7 @@ namespace our {
         // If there is a postprocess material, bind the framebuffer
         if(postprocessMaterial){
             //TODO: (Req 11) bind the framebuffer
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, postprocessFrameBuffer);
             
         }
 
@@ -216,10 +229,10 @@ namespace our {
             // We can acheive the is by multiplying by an extra matrix after the projection but what values should we put in it?
             
             glm::mat4 alwaysBehindTransform = glm::mat4(
-                1.0f, 0.0f, 0.0f, -1.0f,
-                0.0f, 1.0f, 0.0f, -1.0f,
-                1.0f, 1.0f, 1.0f, 1.0f,
-                1.0f, 1.0f, 1.0f, 1.0f
+                1.0f, 0.0f, 0.0f, 0.0f,
+                0.0f, 1.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 1.0f, 0.0f,
+                0.0f, 0.0f, 0.0f, 1.0f
             );
        
             //TODO: (Req 10) set the "transform" uniform
@@ -243,10 +256,18 @@ namespace our {
         // If there is a postprocess material, apply postprocessing
         if(postprocessMaterial){
             //TODO: (Req 11) Return to the default framebuffer
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
             
             //TODO: (Req 11) Setup the postprocess material and draw the fullscreen triangle
-            
-        }
+            postprocessMaterial->setup();
+            //glViewport(0 , 0 , windowSize.x , windowSize.y );
+            glBindVertexArray(postProcessVertexArray);
+            glDrawArrays(GL_TRIANGLES, 0, 3);
+            glBindVertexArray(0);
+
+            glEnable(GL_DEPTH_TEST);
+
+     }
     }
 
 }
