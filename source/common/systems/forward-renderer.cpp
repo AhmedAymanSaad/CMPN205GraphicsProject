@@ -66,19 +66,21 @@ namespace our {
             // The depth format can be (Depth component with 24 bits)
 
             // Color Attactment
+            colorTarget = new Texture2D();
             auto colorTarget2 = this->colorTarget->getOpenGLName() ;
             glGenTextures(1, &colorTarget2 );
             glBindTexture(GL_TEXTURE_2D, this->colorTarget->getOpenGLName());
 
-            GLuint mip_levels = glm::floor(glm::log2(glm::max<float>(windowSize.x,windowSize.y))) + 1;
-            glTexImage2D(GL_TEXTURE_2D, mip_levels, GL_RGBA8, windowSize.x, windowSize.y, 0, GL_RGBA8, GL_UNSIGNED_BYTE, NULL);
+            GLuint mip_levels = (GLuint)glm::floor(glm::log2(glm::max<float>(float(windowSize.x),float(windowSize.y)))) + 1;
+            glTexStorage2D(GL_TEXTURE_2D, mip_levels, GL_RGBA8, windowSize.x, windowSize.y);
             glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->colorTarget->getOpenGLName(), 0);   
 
             // Depth Attachment
+            depthTarget = new Texture2D();
             auto depthTarget2 = this->depthTarget->getOpenGLName();
             glGenTextures(1, &depthTarget2);
             glBindTexture(GL_TEXTURE_2D, this->depthTarget->getOpenGLName());
-            glTexImage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT24, windowSize.x, windowSize.y, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+            glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT24, windowSize.x, windowSize.y);
             glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, this->depthTarget->getOpenGLName(), 0);
             
             //TODO: (Req 11) Unbind the framebuffer just to be safe
