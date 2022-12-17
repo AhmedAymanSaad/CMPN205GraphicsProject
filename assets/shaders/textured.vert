@@ -10,10 +10,14 @@ out Varyings {
 } vs_out;
 
 uniform mat4 transform;
+uniform int skyRender = 0;
 
 void main(){
     //TODO: (Req 7) Change the next line to apply the transformation matrix
     gl_Position = transform * vec4(position, 1.0);
+    if(skyRender == 1){
+        gl_Position.z = gl_Position.w;
+    }
     vs_out.color = color;
     vs_out.tex_coord = tex_coord;
 }
