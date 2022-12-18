@@ -37,10 +37,20 @@ our::Texture2D* our::texture_utils::loadImage(const std::string& filename, bool 
     our::Texture2D* texture = new our::Texture2D();
     //Bind the texture such that we upload the image data to its storage
     //TODO: (Req 5) Finish this function to fill the texture with the data found in "pixels"
+
+    //Binding an instance of class Texture2D
     texture->bind();
+    //Setting the options for the texture
+    //This function sets the alignment requirements for the start of each pixel row in memory
+    //Differences are of 4 bytes, each row starts at offset multiple of 4 bytes ,used since each pixel is represented by RGBA
     glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+    //parameters: type/target to be saved, miplevel, format (VRAM), width, height, border, format(RAM), data type, data
+    // miplvel: 0 is base image level
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
     glGenerateMipmap(GL_TEXTURE_2D);
+    texture->unbind();
+    //The options set above are stored in the object referenced by objectId name
+    //and restored as soon as we bind the object back to GL_TEXTURE_2D
 
     
 
