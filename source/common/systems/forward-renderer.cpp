@@ -66,20 +66,13 @@ namespace our {
             // The depth format can be (Depth component with 24 bits)
 
             // Color Attactment
-            colorTarget = new Texture2D();
-            auto colorTarget2 = this->colorTarget->getOpenGLName() ;
-            glGenTextures(1, &colorTarget2 );
-            glBindTexture(GL_TEXTURE_2D, this->colorTarget->getOpenGLName());
-
+            colorTarget = texture_utils::empty(GL_RGBA8,windowSize);
             GLuint mip_levels = (GLuint)glm::floor(glm::log2(glm::max<float>(float(windowSize.x),float(windowSize.y)))) + 1;
             glTexStorage2D(GL_TEXTURE_2D, mip_levels, GL_RGBA8, windowSize.x, windowSize.y);
             glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->colorTarget->getOpenGLName(), 0);   
 
             // Depth Attachment
-            depthTarget = new Texture2D();
-            auto depthTarget2 = this->depthTarget->getOpenGLName();
-            glGenTextures(1, &depthTarget2);
-            glBindTexture(GL_TEXTURE_2D, this->depthTarget->getOpenGLName());
+            depthTarget = texture_utils::empty(GL_RGBA8,windowSize);
             glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT24, windowSize.x, windowSize.y);
             glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, this->depthTarget->getOpenGLName(), 0);
             
@@ -170,7 +163,6 @@ namespace our {
         std::sort(transparentCommands.begin(), transparentCommands.end(), [cameraForward](const RenderCommand& first, const RenderCommand& second){
             //TODO: (Req 9) Finish this function
             // HINT: the following return should return true "first" should be drawn before "second". 
-
             if (glm::dot(first.center, cameraForward) < glm::dot(second.center, cameraForward))
                 return true;
             return false;
@@ -189,13 +181,11 @@ namespace our {
         //TODO: (Req 9) Set the color mask to true and the depth mask to true (to ensure the glClear will affect the framebuffer)
         glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
         glDepthMask(GL_TRUE);
-        
 
         // If there is a postprocess material, bind the framebuffer
         if(postprocessMaterial){
             //TODO: (Req 11) bind the framebuffer
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, postprocessFrameBuffer);
-            
         }
 
         //TODO: (Req 9) Clear the color and depth buffers
@@ -228,8 +218,7 @@ namespace our {
             glm::mat4 model1 = camera->getOwner()->getLocalToWorldMatrix();
             
             //TODO: (Req 10) We want the sky to be drawn behind everything (in NDC space, z=1)
-            // We can acheive the is by multiplying by an extra matrix after the projection but what values should we put in it?
-            
+            // We can acheive the is by multiplying by an extra matrix after the projection but what values should we put in it?         
             glm::mat4 alwaysBehindTransform = glm::mat4(
                 1.0f, 0.0f, 0.0f, 0.0f,
                 0.0f, 1.0f, 0.0f, 0.0f,
@@ -238,9 +227,7 @@ namespace our {
             );
        
             //TODO: (Req 10) set the "transform" uniform
-            //skyMaterial->shader->set("transform",    VP *  alwaysBehindTransform * model );
             skyMaterial->shader->set("transform",   alwaysBehindTransform *  VP * model   );
-            //skyMaterial->shader->set("skyRender", 1);
             
             //TODO: (Req 10) draw the sky sphere
             skySphere->draw();
@@ -262,13 +249,9 @@ namespace our {
             
             //TODO: (Req 11) Setup the postprocess material and draw the fullscreen triangle
             postprocessMaterial->setup();
-            //glViewport(0 , 0 , windowSize.x , windowSize.y );
             glBindVertexArray(postProcessVertexArray);
-            glDrawArrays(GL_TRIANGLES, 0, 3);
+            glDrawArrays(GL_TRIANGLES, GLint(0), GLsizei(3));
             glBindVertexArray(0);
-
-            glEnable(GL_DEPTH_TEST);
-
      }
     }
 
