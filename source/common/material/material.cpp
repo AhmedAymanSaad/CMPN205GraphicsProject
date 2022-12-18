@@ -28,6 +28,7 @@ namespace our {
     void TintedMaterial::setup() const {
         //TODO: (Req 7) Write this function
         Material::setup();
+        // setting the uniform variable "tint" to the tint value
         shader->set("tint", tint);
     }
 
@@ -44,9 +45,13 @@ namespace our {
     void TexturedMaterial::setup() const {
         TintedMaterial::setup();
         shader->set("alphaThreshold", alphaThreshold);
+        // Set to 0 because we need the same value saved in the Texture Unit
         GLuint textureUnit = 0;
+        // save the texture to the textureUnit GL_TEXTURE0
+        glActiveTexture(GL_TEXTURE0);
         texture->bind();
         sampler->bind(textureUnit);
+        // setting the uniform variable "tex" to the textureUnit
         shader->set("tex", textureUnit);
         //TODO: (Req 7) Write this function
     }
