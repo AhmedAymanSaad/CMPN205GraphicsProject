@@ -50,6 +50,7 @@ namespace our {
 
         // These options specify the color and depth mask which can be used to
         // prevent the rendering/clearing from modifying certain channels of certain targets in the framebuffer
+        //                      red   green        alpha  false->no change is made to the red component of any pixel in any of the color buffers, regardless of the drawing operation attempted.
         glm::bvec4 colorMask = {true, true, true, true}; // To know how to use it, check glColorMask
         bool depthMask = true; // To know how to use it, check glDepthMask
 

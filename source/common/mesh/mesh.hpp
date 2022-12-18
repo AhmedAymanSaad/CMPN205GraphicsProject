@@ -30,6 +30,7 @@ namespace our {
         {
            // remember to store the number of elements in "elementCount" since you will need it for drawing
             // For the attribute locations, use the constants defined above: ATTRIB_LOC_POSITION, ATTRIB_LOC_COLOR, etc
+            // genrate the buffer to store in it
             glGenBuffers(1, &VBO);
             glGenBuffers(1, &EBO);
             glGenVertexArrays(1, &VAO);
@@ -40,6 +41,7 @@ namespace our {
 
             // Fill the vertecies data in VBO
             glBindBuffer(GL_ARRAY_BUFFER, VBO);
+            //          type of buffer     size of the buffer              array to be saved in buffer
             glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
 
             // Fill the elements data in EBO
@@ -71,6 +73,7 @@ namespace our {
         {
             //TODO: (Req 2) Write this function
             glBindVertexArray(VAO);
+            // what we will darw        size of elemnetarray ,type, offset  
             glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
         }
