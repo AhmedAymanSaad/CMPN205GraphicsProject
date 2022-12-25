@@ -50,7 +50,8 @@ namespace our {
         // save the texture to the textureUnit GL_TEXTURE0
         glActiveTexture(GL_TEXTURE0);
         texture->bind();
-        sampler->bind(textureUnit);
+        if (sampler != nullptr)
+            sampler->bind(textureUnit);
         // setting the uniform variable "tex" to the textureUnit
         shader->set("tex", textureUnit);
         //TODO: (Req 7) Write this function
