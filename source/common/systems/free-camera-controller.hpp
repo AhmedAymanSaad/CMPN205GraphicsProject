@@ -14,6 +14,8 @@
 namespace our
 {
 
+    int isJumped=0; // variable that identfies the jump
+
     // The free camera controller system is responsible for moving every entity which contains a FreeCameraControllerComponent.
     // This system is added as a slightly complex example for how use the ECS framework to implement logic. 
     // For more information, see "common/components/free-camera-controller.hpp"
@@ -98,6 +100,29 @@ namespace our
             // A & D moves the player left or right 
             if(app->getKeyboard().isPressed(GLFW_KEY_D)) position += right * (deltaTime * current_sensitivity.x);
             if(app->getKeyboard().isPressed(GLFW_KEY_A)) position -= right * (deltaTime * current_sensitivity.x);
+            if(app->getKeyboard().isPressed(GLFW_KEY_SPACE) && isJumped == 0){
+                position.y += 4;
+                isJumped = 45;
+            }
+            if(isJumped!=0)
+            {
+                isJumped--;
+                if(isJumped==30)
+                {
+                    position.y -= 2;
+                }
+                if(isJumped==15)
+                {
+                    position.y -= 1;
+                }
+                if(isJumped==0)
+                {
+                    position.y -= 1;
+                }
+
+            }  
+
+
         }
 
         // When the state exits, it should call this function to ensure the mouse is unlocked
