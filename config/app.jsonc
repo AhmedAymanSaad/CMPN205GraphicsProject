@@ -151,13 +151,19 @@
                 "position": [0, 0, 10],
                 "components": [
                     {
-                        "type": "Camera"
-                    },
-                    {
-                        "type": "Free Camera Controller"
+                        "type": "Player Controller"
                     }
                 ],
                 "children": [
+                    {
+                        "position": [0, 0, 1],
+                        "rotation": [0, 0, 0],
+                        "components": [
+                            {
+                                "type": "Camera"
+                            }
+                        ]
+                    },
                     {
                         "position": [1, -1, -1],
                         "rotation": [45, 45, 0],
