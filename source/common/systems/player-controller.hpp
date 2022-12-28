@@ -68,36 +68,35 @@ namespace our
 
             // We get a reference to the entity's position and rotation
             glm::vec3& position = entity->localTransform.position;
+            glm::vec3& parentRotation = entity->localTransform.rotation;
+
             glm::vec3& rotation = childEntity->localTransform.rotation;
             glm::vec3& childPosition = childEntity->localTransform.position;
 
             // If the left mouse button is pressed, we get the change in the mouse location
             // and use it to update the camera rotation
 //////////////////////////////////////////////
-            if(app->getMouse().isPressed(GLFW_MOUSE_BUTTON_1)){
+            if(app->getMouse().isPressed(GLFW_MOUSE_BUTTON_1) ){
                 glm::vec2 delta = app->getMouse().getMouseDelta();
-                rotation.x -= delta.y * controller->rotationSensitivity; // The y-axis controls the pitch
-                rotation.y -= delta.x * controller->rotationSensitivity; // The x-axis controls the yaw
+                if (app->getKeyboard().isPressed(GLFW_KEY_Z)) {
+                    rotation.x -= delta.y * controller->rotationSensitivity; // The y-axis controls the pitch
+                    rotation.y -= delta.x * controller->rotationSensitivity; // The x-axis controls the yaw
 
-                // glm::vec2 angleChanges = glm::vec2(0, delta.x * controller->rotationSensitivity);
-                // given the change in the angle of the camera rotation.y (yaw), we can compute the change in the camera's position
-                // change is in the xz plane so we only need to change the x and z components of the camera's position
-                // the camera will move in a circle around the player, given the center of the circle is the player's position
-                // glm::vec3 change = glm::vec3(0, 0, 0);
-                // change.x = -glm::sin(rotation.y) * controller->rotationSensitivity;
-                // change.z = -glm::cos(rotation.y) * controller->rotationSensitivity;
-                // childPosition += change;
 
-                float radius = 1;
-                // rotation.y = 0;
-                childPosition.x = radius * glm::sin(rotation.y) * glm::cos(rotation.x);
-                childPosition.z = radius * glm::cos(rotation.y) * glm::cos(rotation.x);
-                childPosition.y = -radius * glm::sin(rotation.x);
+                    float radius = 1;
 
- 
+                    childPosition.x = radius * glm::sin(rotation.y) * glm::cos(rotation.x);
+                    childPosition.z = radius * glm::cos(rotation.y) * glm::cos(rotation.x);
+                    childPosition.y = -radius * glm::sin(rotation.x);
 
-                float normal = glm::sqrt(childPosition.x * childPosition.x + childPosition.y * childPosition.y + childPosition.z * childPosition.z);
-                std:: cout << "camera position: " << childPosition.x << ", " << childPosition.y << ", " << childPosition.z << ", " << normal << std::endl;
+                    float normal = glm::sqrt(childPosition.x * childPosition.x + childPosition.y * childPosition.y + childPosition.z * childPosition.z);
+                    std:: cout << "camera position: " << childPosition.x << ", " << childPosition.y << ", " << childPosition.z << ", " << normal << std::endl;
+                }
+                else {
+                    // parentRotation.x -= delta.y * controller->rotationSensitivity; // The y-axis controls the pitch
+                    parentRotation.y -= delta.x * controller->rotationSensitivity; // The x-axis controls the yaw
+                }
+
             }
 
 
