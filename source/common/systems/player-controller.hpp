@@ -69,6 +69,7 @@ namespace our
             // We get a reference to the entity's position and rotation
             glm::vec3& position = entity->localTransform.position;
             glm::vec3& rotation = childEntity->localTransform.rotation;
+            glm::vec3& childPosition = childEntity->localTransform.position;
 
             // If the left mouse button is pressed, we get the change in the mouse location
             // and use it to update the camera rotation
@@ -77,7 +78,17 @@ namespace our
                 glm::vec2 delta = app->getMouse().getMouseDelta();
                 rotation.x -= delta.y * controller->rotationSensitivity; // The y-axis controls the pitch
                 rotation.y -= delta.x * controller->rotationSensitivity; // The x-axis controls the yaw
+
+                // moving camera around the player in spherical coordinates
+                childPosition.x = 1 * glm::cos(delta.y * controller->rotationSensitivity) * glm::sin(delta.x * controller->rotationSensitivity);
+                childPosition.y = 1 * glm::sin(delta.y * controller->rotationSensitivity);
+                childPosition.z = 1 * glm::cos(delta.y * controller->rotationSensitivity) * glm::cos(delta.x * controller->rotationSensitivity);
+                childEntity->localTransform.position = childPosition;
+
             }
+
+
+
 
             // We prevent the pitch from exceeding a certain angle from the XZ plane to prevent gimbal locks
             if(rotation.x < -glm::half_pi<float>() * 0.99f) rotation.x = -glm::half_pi<float>() * 0.99f;
@@ -85,6 +96,8 @@ namespace our
             // This is not necessary, but whenever the rotation goes outside the 0 to 2*PI range, we wrap it back inside.
             // This could prevent floating point error if the player rotates in single direction for an extremely long time. 
             rotation.y = glm::wrapAngle(rotation.y);
+            // moving the camera in a spherical coordinate system around the player where the radius is 1
+            // the camera is always looking at the player
 
 
             // We get the camera model matrix (relative to its parent) to compute the front, up and right directions
