@@ -35,22 +35,27 @@ namespace our
         void update(World* world, float deltaTime) {
             // First of all, we search for an entity containing both a CameraComponent and a FreeCameraControllerComponent
             // As soon as we find one, we break
-            // CameraComponent* camera = nullptr;
+            CameraComponent* camera = nullptr;
+
             PlayerControllerComponent *controller = nullptr;
             for(auto entity : world->getEntities()){
-                // camera = entity->getComponent<CameraComponent>();
                 controller = entity->getComponent<PlayerControllerComponent>();
                 if( controller) break;
             }
+            for(auto entity : world->getEntities()){
+                camera = entity->getComponent<CameraComponent>();
+                if(camera) break;
+            }
+            
 
-            // std::cout << "cameraaaaaa: " << camera << std::endl;
             // If there is no entity with both a CameraComponent and a FreeCameraControllerComponent, we can do nothing so we return
             if(!(controller)) return;
-            //printing the camera and controller
-            // std::cout << "controller: " << controller << std::endl;
+            if (!(camera)) return;
             // Get the entity that we found via getOwner of camera (we could use controller->getOwner())
             Entity* entity = controller->getOwner();
+            Entity* childEntity = camera->getOwner();
 
+/////////////////////////////////////////////
             // If the left mouse button is pressed, we lock and hide the mouse. This common in First Person Games.
             if(app->getMouse().isPressed(GLFW_MOUSE_BUTTON_1) && !mouse_locked){
                 app->getMouse().lockMouse(app->getWindow());
@@ -63,10 +68,11 @@ namespace our
 
             // We get a reference to the entity's position and rotation
             glm::vec3& position = entity->localTransform.position;
-            glm::vec3& rotation = entity->localTransform.rotation;
+            glm::vec3& rotation = childEntity->localTransform.rotation;
 
             // If the left mouse button is pressed, we get the change in the mouse location
             // and use it to update the camera rotation
+//////////////////////////////////////////////
             if(app->getMouse().isPressed(GLFW_MOUSE_BUTTON_1)){
                 glm::vec2 delta = app->getMouse().getMouseDelta();
                 rotation.x -= delta.y * controller->rotationSensitivity; // The y-axis controls the pitch
@@ -80,13 +86,10 @@ namespace our
             // This could prevent floating point error if the player rotates in single direction for an extremely long time. 
             rotation.y = glm::wrapAngle(rotation.y);
 
-            // We update the camera fov based on the mouse wheel scrolling amount
-            // float fov = camera->fovY + app->getMouse().getScrollOffset().y * controller->fovSensitivity;
-            // fov = glm::clamp(fov, glm::pi<float>() * 0.01f, glm::pi<float>() * 0.99f); // We keep the fov in the range 0.01*PI to 0.99*PI
-            // camera->fovY = fov;
 
             // We get the camera model matrix (relative to its parent) to compute the front, up and right directions
             glm::mat4 matrix = entity->localTransform.toMat4();
+            // glm::mat4 childMatrix = childEntity->localTransform.toMat4();
 
             glm::vec3 front = glm::vec3(matrix * glm::vec4(0, 0, -1, 0)),
                       up = glm::vec3(matrix * glm::vec4(0, 1, 0, 0)), 
