@@ -35,17 +35,21 @@ namespace our
         void update(World* world, float deltaTime) {
             // First of all, we search for an entity containing both a CameraComponent and a FreeCameraControllerComponent
             // As soon as we find one, we break
-            CameraComponent* camera = nullptr;
+            // CameraComponent* camera = nullptr;
             PlayerControllerComponent *controller = nullptr;
             for(auto entity : world->getEntities()){
-                camera = entity->getComponent<CameraComponent>();
+                // camera = entity->getComponent<CameraComponent>();
                 controller = entity->getComponent<PlayerControllerComponent>();
-                if(camera && controller) break;
+                if( controller) break;
             }
+
+            // std::cout << "cameraaaaaa: " << camera << std::endl;
             // If there is no entity with both a CameraComponent and a FreeCameraControllerComponent, we can do nothing so we return
-            if(!(camera && controller)) return;
+            if(!(controller)) return;
+            //printing the camera and controller
+            // std::cout << "controller: " << controller << std::endl;
             // Get the entity that we found via getOwner of camera (we could use controller->getOwner())
-            Entity* entity = camera->getOwner();
+            Entity* entity = controller->getOwner();
 
             // If the left mouse button is pressed, we lock and hide the mouse. This common in First Person Games.
             if(app->getMouse().isPressed(GLFW_MOUSE_BUTTON_1) && !mouse_locked){
@@ -77,9 +81,9 @@ namespace our
             rotation.y = glm::wrapAngle(rotation.y);
 
             // We update the camera fov based on the mouse wheel scrolling amount
-            float fov = camera->fovY + app->getMouse().getScrollOffset().y * controller->fovSensitivity;
-            fov = glm::clamp(fov, glm::pi<float>() * 0.01f, glm::pi<float>() * 0.99f); // We keep the fov in the range 0.01*PI to 0.99*PI
-            camera->fovY = fov;
+            // float fov = camera->fovY + app->getMouse().getScrollOffset().y * controller->fovSensitivity;
+            // fov = glm::clamp(fov, glm::pi<float>() * 0.01f, glm::pi<float>() * 0.99f); // We keep the fov in the range 0.01*PI to 0.99*PI
+            // camera->fovY = fov;
 
             // We get the camera model matrix (relative to its parent) to compute the front, up and right directions
             glm::mat4 matrix = entity->localTransform.toMat4();

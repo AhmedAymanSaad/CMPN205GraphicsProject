@@ -150,6 +150,9 @@
             {
                 "position": [0, 0, 10],
                 "components": [
+                    // {
+                    //     "type": "Camera"
+                    // },
                     {
                         "type": "Player Controller"
                     }
@@ -161,6 +164,9 @@
                         "components": [
                             {
                                 "type": "Camera"
+                            },
+                            {
+                                "type": "Free Camera Controller"
                             }
                         ]
                     },

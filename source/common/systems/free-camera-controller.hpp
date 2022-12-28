@@ -3,6 +3,7 @@
 #include "../ecs/world.hpp"
 #include "../components/camera.hpp"
 #include "../components/free-camera-controller.hpp"
+#include "../components/player-controller.hpp"
 
 #include "../application.hpp"
 
@@ -33,15 +34,25 @@ namespace our
             // As soon as we find one, we break
             CameraComponent* camera = nullptr;
             FreeCameraControllerComponent *controller = nullptr;
+            PlayerControllerComponent *player = nullptr;
             for(auto entity : world->getEntities()){
                 camera = entity->getComponent<CameraComponent>();
                 controller = entity->getComponent<FreeCameraControllerComponent>();
                 if(camera && controller) break;
             }
+            for (auto entity : world->getEntities()) {
+                player = entity->getComponent<PlayerControllerComponent>();
+                if (player) break;
+            }
+            //print camera, controller, player
+            //std::cout << "camera: " << camera << " controller:"  <<  controller << " player:" << player << std::endl; 
             // If there is no entity with both a CameraComponent and a FreeCameraControllerComponent, we can do nothing so we return
             if(!(camera && controller)) return;
             // Get the entity that we found via getOwner of camera (we could use controller->getOwner())
+            // get the entity parent of the current entity
             Entity* entity = camera->getOwner();
+
+            Entity* playerEntity = player->getOwner();
 
             // If the left mouse button is pressed, we lock and hide the mouse. This common in First Person Games.
             if(app->getMouse().isPressed(GLFW_MOUSE_BUTTON_1) && !mouse_locked){
@@ -79,6 +90,7 @@ namespace our
 
             // We get the camera model matrix (relative to its parent) to compute the front, up and right directions
             glm::mat4 matrix = entity->localTransform.toMat4();
+            glm::mat4 playerMatrix = playerEntity->localTransform.toMat4();
 
             glm::vec3 front = glm::vec3(matrix * glm::vec4(0, 0, -1, 0)),
                       up = glm::vec3(matrix * glm::vec4(0, 1, 0, 0)), 
