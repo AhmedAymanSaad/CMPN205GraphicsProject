@@ -8,6 +8,7 @@
 #include <systems/player-controller.hpp>
 #include <systems/movement.hpp>
 #include <asset-loader.hpp>
+#include <systems/collision-detection.hpp>
 
 // This state shows how to use the ECS framework and deserialization.
 class Playstate: public our::State {
@@ -16,6 +17,7 @@ class Playstate: public our::State {
     our::ForwardRenderer renderer;
     our::PlayerControllerSystem cameraController;
     our::FreeCameraControllerSystem freeCameraController;
+    our::CollisionDetectionSystem collisionDetectionSystem;
 
     our::MovementSystem movementSystem;
 
@@ -41,6 +43,7 @@ class Playstate: public our::State {
         // Here, we just run a bunch of systems to control the world logic
         movementSystem.update(&world, (float)deltaTime);
         cameraController.update(&world, (float)deltaTime);
+        collisionDetectionSystem.update(&world, (float)deltaTime);
         // And finally we use the renderer system to draw the scene
         renderer.render(&world);
 
