@@ -271,9 +271,6 @@
                             {
                                 "type": "Camera"
                             }
-                            // {
-                            //     "type": "Free Camera Controller"
-                            // }
                         ]
                     },
                     {
@@ -295,8 +292,8 @@
                         "components": [
                             {
                                 "type": "Mesh Renderer",
-                                "mesh": "egg",
-                                "material": "egg"
+                                "mesh": "cube",
+                                "material": "metal"
                             }
                         ]
                     }
@@ -696,7 +693,7 @@
                 "components": [
                     {
                         "type": "Mesh Renderer",
-                        "mesh": "coin",
+                        "mesh": "GoldCoinBlank",
                         "material": "grass"
                     }
                 ]
