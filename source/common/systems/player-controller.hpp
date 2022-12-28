@@ -79,12 +79,25 @@ namespace our
                 rotation.x -= delta.y * controller->rotationSensitivity; // The y-axis controls the pitch
                 rotation.y -= delta.x * controller->rotationSensitivity; // The x-axis controls the yaw
 
-                // moving camera around the player in spherical coordinates
-                childPosition.x = 1 * glm::cos(delta.y * controller->rotationSensitivity) * glm::sin(delta.x * controller->rotationSensitivity);
-                childPosition.y = 1 * glm::sin(delta.y * controller->rotationSensitivity);
-                childPosition.z = 1 * glm::cos(delta.y * controller->rotationSensitivity) * glm::cos(delta.x * controller->rotationSensitivity);
-                childEntity->localTransform.position = childPosition;
+                // glm::vec2 angleChanges = glm::vec2(0, delta.x * controller->rotationSensitivity);
+                // given the change in the angle of the camera rotation.y (yaw), we can compute the change in the camera's position
+                // change is in the xz plane so we only need to change the x and z components of the camera's position
+                // the camera will move in a circle around the player, given the center of the circle is the player's position
+                // glm::vec3 change = glm::vec3(0, 0, 0);
+                // change.x = -glm::sin(rotation.y) * controller->rotationSensitivity;
+                // change.z = -glm::cos(rotation.y) * controller->rotationSensitivity;
+                // childPosition += change;
 
+                float radius = 1;
+                // rotation.y = 0;
+                childPosition.x = radius * glm::sin(rotation.y) * glm::cos(rotation.x);
+                childPosition.z = radius * glm::cos(rotation.y) * glm::cos(rotation.x);
+                childPosition.y = -radius * glm::sin(rotation.x);
+
+ 
+
+                float normal = glm::sqrt(childPosition.x * childPosition.x + childPosition.y * childPosition.y + childPosition.z * childPosition.z);
+                std:: cout << "camera position: " << childPosition.x << ", " << childPosition.y << ", " << childPosition.z << ", " << normal << std::endl;
             }
 
 
