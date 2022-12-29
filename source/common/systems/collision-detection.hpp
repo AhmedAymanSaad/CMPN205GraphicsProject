@@ -156,14 +156,22 @@ namespace our
                                 }
                                 int passed = 0;
                             }
-                            if (colliderFace3.y<collidedWithFace4.y && colliderFace3.y>collidedWithFace3.y)
+                             if (colliderFace3.y>collidedWithFace4.y && colliderFace3.y<collidedWithFace3.y)
                             {
+                                double diffY = colliderFace3.y - collidedWithFace4.y;
+                                double diffZ = colliderFace3.z - collidedWithFace4.z;
+                                if (abs(diffY) > abs(0.01))
+                                {
+                                    collision->collided.x = 1;
+                                    collision->collided.z = 1;
+                                    continue;
+                                }
                                 //check if they are colliding on the x and z axis
                                 bool collisionX = (colliderFace3.x + collision->boundingBox.x > collidedWithFace4.x - collidedWith->boundingBox.x && colliderFace3.x + collision->boundingBox.x < collidedWithFace4.x + collidedWith->boundingBox.x) || (colliderFace3.x - collision->boundingBox.x < collidedWithFace4.x + collidedWith->boundingBox.x && colliderFace3.x - collision->boundingBox.x > collidedWithFace4.x - collidedWith->boundingBox.x);
                                 bool collisionZ = (colliderFace3.z  + collision->boundingBox.z > collidedWithFace4.z - collidedWith->boundingBox.z && colliderFace3.z + collision->boundingBox.z < collidedWithFace4.z + collidedWith->boundingBox.z) || (colliderFace3.z - collision->boundingBox.z < collidedWithFace4.z + collidedWith->boundingBox.z && colliderFace3.z - collision->boundingBox.z > collidedWithFace4.z - collidedWith->boundingBox.z);
                                 if (collisionX && collisionZ)
                                 {
-                                    collision->collided.y = 1;
+                                    collision->collided.z = 1;
                                     continue; 
                                 }
                                 int passed = 0;
