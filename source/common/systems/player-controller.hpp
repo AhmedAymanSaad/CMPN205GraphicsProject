@@ -160,7 +160,8 @@ namespace our
             if (deltaTime > 0.5) {
                 deltaTime = 0.1;
             }
-            velocity += gravity * deltaTime;
+            if (collider->collided.y == 0)
+                velocity += gravity * deltaTime;
             if (velocity < -10) {
                 velocity = -8;
             }
