@@ -13,6 +13,8 @@ namespace our {
         glm::vec3 boundingBox; // The bounding box of the object
         glm::vec3 lastPosition; // The last position of the object
         bool collider; // If the object is a collider
+        glm::vec3 collided = glm::vec3(0,0,0) ;// If the object has collided
+        bool ground = false; // If the object the ground
 
         // The ID of this component type is "Collision"
         static std::string getID() { return "Collision"; }

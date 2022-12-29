@@ -11,6 +11,9 @@
 #include <glm/trigonometric.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
 
+#include "../components/collision.hpp"
+
+
 namespace our
 {
 
@@ -21,9 +24,9 @@ namespace our
         Application* app; // The application in which the state runs
         bool mouse_locked = false; // Is the mouse locked
 
-        bool jump = 0;
         float velocity = 5;
         float gravity = -9.8;
+        float lastYPos = 0;
 
     public:
         // When a state enters, it should call this function and give it the pointer to the application
@@ -38,6 +41,7 @@ namespace our
             CameraComponent* camera = nullptr;
 
             PlayerControllerComponent *controller = nullptr;
+            CollisionComponent *collider = nullptr;
             for(auto entity : world->getEntities()){
                 controller = entity->getComponent<PlayerControllerComponent>();
                 if( controller) break;
@@ -45,6 +49,12 @@ namespace our
             for(auto entity : world->getEntities()){
                 camera = entity->getComponent<CameraComponent>();
                 if(camera) break;
+            }
+            for(auto entity : world->getEntities()){
+                if (entity->parent==controller->getOwner()){
+                    collider = entity->getComponent<CollisionComponent>();
+                    if(collider) break;
+                }
             }
             
 
@@ -72,6 +82,7 @@ namespace our
 
             glm::vec3& rotation = childEntity->localTransform.rotation;
             glm::vec3& childPosition = childEntity->localTransform.position;
+
 
             // If the left mouse button is pressed, we get the change in the mouse location
             // and use it to update the camera rotation
@@ -135,18 +146,22 @@ namespace our
             if(app->getKeyboard().isPressed(GLFW_KEY_D)) position += right * (deltaTime * current_sensitivity.x);
             if(app->getKeyboard().isPressed(GLFW_KEY_A)) position -= right * (deltaTime * current_sensitivity.x);
 
-            if(app->getKeyboard().isPressed(GLFW_KEY_SPACE) && jump == 0) {
-                jump = 1;
+
+            // get collider componenet
+            
+            if (collider->collided.y == 1) {
+                velocity = 0;
             }
-            if(jump == 1) {
-                velocity += gravity * deltaTime;
-                position.y += (deltaTime * velocity);
-                if(position.y <= 0) {
-                    position.y = 0;
-                    jump = 0;
-                    velocity = 5;
-                }
+
+            if(app->getKeyboard().isPressed(GLFW_KEY_SPACE) && collider->collided.y==1) {
+                velocity = 5;
             }
+            
+            
+            // velocity -= gravity * deltaTime;
+            // position.y += (deltaTime * velocity);
+            
+            
         }
 
         // When the state exits, it should call this function to ensure the mouse is unlocked

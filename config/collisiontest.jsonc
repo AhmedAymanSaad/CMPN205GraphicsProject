@@ -244,7 +244,7 @@
             {
                 "position": [
                     0,
-                    0,
+                    10,
                     10
                 ],
                 "components": [
@@ -295,9 +295,9 @@
                             {
                                 "type": "Collision",
                                 "boundingBox": [
-                                    1,
-                                    1,
-                                    1
+                                    0.1,
+                                    0.1,
+                                    0.1
                                 ],
                                 "collider": true
                             }
@@ -308,7 +308,7 @@
             {
                 "position": [
                     0,
-                    0,
+                    -0.5,
                     0
                 ], //container3
                 "rotation": [
@@ -318,8 +318,8 @@
                 ],
                 "scale": [
                     1,
-                    1,
-                    1
+                    0.5,
+                    0.8
                 ],
                 "components": [
                     {
@@ -330,7 +330,7 @@
                     {
                         "type": "Collision",
                         "boundingBox": [
-                            1,1,1
+                            1,0.5,0.8
                         ],
                         "collider": false
                     }
@@ -350,13 +350,23 @@
                 "scale": [
                     40,
                     40,
-                    1
+                    0.1
                 ],
                 "components": [
                     {
                         "type": "Mesh Renderer",
                         "mesh": "plane",
                         "material": "grass"
+                    },
+                    {
+                        "type": "Collision",
+                        "boundingBox": [
+                            40,
+                            0.1,
+                            40
+                        ],
+                        "collider": false,
+                        "ground": true
                     }
                 ]
             },

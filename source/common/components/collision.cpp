@@ -9,7 +9,7 @@ namespace our {
         if (!data.is_object()) return;
         boundingBox = data.value ("boundingBox", glm::vec3(0.0f, 0.0f, 0.0f));
         collider = data.value ("collider", false);
-        lastPosition = getOwner()->localTransform.position;
+        ground = data.value ("ground", false);
     }
 
 }
