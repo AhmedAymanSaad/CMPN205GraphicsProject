@@ -24,7 +24,7 @@ namespace our
         Application* app; // The application in which the state runs
         bool mouse_locked = false; // Is the mouse locked
 
-        float velocity = 5;
+        float velocity = 0;
         float gravity = -9.8;
         float lastYPos = 0;
 
@@ -157,9 +157,21 @@ namespace our
                 velocity = 5;
             }
             
-            
-            // velocity -= gravity * deltaTime;
-            // position.y += (deltaTime * velocity);
+            if (deltaTime > 0.5) {
+                deltaTime = 0.1;
+            }
+            velocity += gravity * deltaTime;
+            if (velocity < -10) {
+                velocity = -8;
+            }
+            if (velocity > 10) {
+                velocity = 10;
+            }
+
+            position.y += (deltaTime * velocity);
+
+            std::cout << "velocity: " << velocity << std::endl;
+            std::cout << "position: " << position.y << std::endl;
             
             
         }

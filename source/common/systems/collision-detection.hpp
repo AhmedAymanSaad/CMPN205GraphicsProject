@@ -83,10 +83,7 @@ namespace our
                             parent->localTransform.position.y = collision->lastPosition.y;
                         }
                     }
-                    else
-                    {
-                        collision->lastPosition = parent->localTransform.position;
-                    }
+                    collision->lastPosition = parent->localTransform.position;
                 }
             }
         }
