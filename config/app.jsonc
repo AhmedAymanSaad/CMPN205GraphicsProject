@@ -267,6 +267,9 @@
                     10
                 ],
                 "components": [
+                    // {
+                    //     "type": "Camera"
+                    // },
                     {
                         "type": "Player Controller"
                     }

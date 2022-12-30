@@ -56,7 +56,7 @@ class Menustate: public our::State {
         menuMaterial->shader->attach("assets/shaders/textured.frag", GL_FRAGMENT_SHADER);
         menuMaterial->shader->link();
         // Then we load the menu texture
-        menuMaterial->texture = our::texture_utils::loadImage("assets/textures/menu3.png");
+        menuMaterial->texture = our::texture_utils::loadImage("assets/textures/menu2.png");
         // Initially, the menu material will be black, then it will fade in
         menuMaterial->tint = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -112,7 +112,7 @@ class Menustate: public our::State {
         // Get a reference to the keyboard object
         auto& keyboard = getApp()->getKeyboard();
 
-        if(keyboard.justPressed(GLFW_KEY_SPACE)){
+        if(keyboard.justPressed(GLFW_KEY_ENTER)){
             // If the space key is pressed in this frame, go to the play state
             getApp()->changeState("play");
         } else if(keyboard.justPressed(GLFW_KEY_ESCAPE)) {

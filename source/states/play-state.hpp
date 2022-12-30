@@ -5,15 +5,20 @@
 #include <ecs/world.hpp>
 #include <systems/forward-renderer.hpp>
 #include <systems/free-camera-controller.hpp>
+#include <systems/player-controller.hpp>
 #include <systems/movement.hpp>
 #include <asset-loader.hpp>
+#include <systems/collision-detection.hpp>
 
 // This state shows how to use the ECS framework and deserialization.
 class Playstate: public our::State {
 
     our::World world;
     our::ForwardRenderer renderer;
-    our::FreeCameraControllerSystem cameraController;
+    our::PlayerControllerSystem cameraController;
+    our::FreeCameraControllerSystem freeCameraController;
+    our::CollisionDetectionSystem collisionDetectionSystem;
+
     our::MovementSystem movementSystem;
 
     void onInitialize() override {
@@ -32,10 +37,12 @@ class Playstate: public our::State {
         // Then we initialize the renderer
         auto size = getApp()->getFrameBufferSize();
         renderer.initialize(size, config["renderer"]);
+        collisionDetectionSystem.initialize(&world);
     }
 
     void onDraw(double deltaTime) override {
         // Here, we just run a bunch of systems to control the world logic
+        collisionDetectionSystem.update(&world, (float)deltaTime);
         movementSystem.update(&world, (float)deltaTime);
         cameraController.update(&world, (float)deltaTime);
         // And finally we use the renderer system to draw the scene
