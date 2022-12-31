@@ -60,7 +60,7 @@ namespace our
             }
 
             //check if game is over
-            if ( controller->coinsCollected == 3 && !gameOver){
+            if ( controller->coinsCollected == 4 && !gameOver){
                 std::cout << "You win!" << std::endl;
                 gameOver = true;
             }
