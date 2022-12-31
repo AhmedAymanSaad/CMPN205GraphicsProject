@@ -28,6 +28,8 @@ namespace our
         float gravity = -9.8;
         float lastYPos = 0;
 
+        bool gameOver = false;
+
     public:
         // When a state enters, it should call this function and give it the pointer to the application
         void enter(Application* app){
@@ -55,6 +57,12 @@ namespace our
                     collider = entity->getComponent<CollisionComponent>();
                     if(collider) break;
                 }
+            }
+
+            //check if game is over
+            if ( controller->coinsCollected == 3 && !gameOver){
+                std::cout << "You win!" << std::endl;
+                gameOver = true;
             }
             
 
@@ -183,6 +191,10 @@ namespace our
                 mouse_locked = false;
                 app->getMouse().unlockMouse(app->getWindow());
             }
+        }
+
+        bool getGameOver() {
+            return gameOver;
         }
 
     };

@@ -112,7 +112,8 @@ namespace our
                             }
                             if (collidedWith->coin){
                                 collidedWith->getOwner()->getWorld()->markForRemoval(collidedWith->getOwner());
-                                collidedWith->getOwner()->getWorld()->deleteMarkedEntities();
+                                // collidedWith->getOwner()->getWorld()->deleteMarkedEntities();
+                                colliderEntity->parent->getComponent<PlayerControllerComponent>()->coinsCollected += 1;
                                 continue; 
                             }
 
