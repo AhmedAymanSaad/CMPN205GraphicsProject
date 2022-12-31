@@ -10,6 +10,7 @@ namespace our {
         boundingBox = data.value ("boundingBox", glm::vec3(0.0f, 0.0f, 0.0f));
         collider = data.value ("collider", false);
         ground = data.value ("ground", false);
+        coin = data.value ("coin", false);
     }
 
 }

@@ -110,6 +110,11 @@ namespace our
                                 collision->collided.y = 1;
                                 continue;   
                             }
+                            if (collidedWith->coin){
+                                collidedWith->getOwner()->getWorld()->markForRemoval(collidedWith->getOwner());
+                                collidedWith->getOwner()->getWorld()->deleteMarkedEntities();
+                                continue; 
+                            }
 
                           
                             // 1 = right, 2 = left, 3 = top, 4 = bottom, 5 = front, 6 = back
