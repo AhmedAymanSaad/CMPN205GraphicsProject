@@ -15,7 +15,13 @@ namespace our {
         position = data.value("position", glm::vec3(0.0f, 0.0f, 0.0f));
         enabled = data.value("enabled", true);
 
-        attenuation = data.value("attenuation", glm::vec3(0.0f, 0.0f, 0.0f));
-        spot_angle = data.value("spot_angle", glm::vec2(0.0f, 0.0f));
+        glm::vec3 attenuationTemp = data.value("attenuation", glm::vec3(0.0f, 0.0f, 0.0f));
+        attenuation.constant = attenuationTemp.x;
+        attenuation.linear = attenuationTemp.y;
+        attenuation.quadratic = attenuationTemp.z;
+
+        glm::vec2 spot_angleTemp = data.value("spot_angle", glm::vec2(0.0f, 0.0f));
+        spot_angle.inner = spot_angleTemp.x;
+        spot_angle.outer = spot_angleTemp.y;
     }
 }
