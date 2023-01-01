@@ -17,18 +17,16 @@
 namespace our
 {
 
-    // The free camera controller system is responsible for moving every entity which contains a FreeCameraControllerComponent.
-    // This system is added as a slightly complex example for how use the ECS framework to implement logic. 
-    // For more information, see "common/components/free-camera-controller.hpp"
+    // The PlayerControllerSystem system is responsible for moving every entity which contains a FreeCameraControllerComponent.
     class PlayerControllerSystem {
         Application* app; // The application in which the state runs
         bool mouse_locked = false; // Is the mouse locked
 
-        float velocity = 0;
-        float gravity = -9.8;
-        float lastYPos = 0;
+        float velocity = 0; // The velocity of the player
+        float gravity = -9.8; // The gravity of the game applied to the player
+        float lastYPos = 0; // The last Y position of the player
 
-        bool gameOver = false;
+        bool gameOver = false; // Is the game over, used for the end screen
 
     public:
         // When a state enters, it should call this function and give it the pointer to the application
@@ -38,10 +36,12 @@ namespace our
 
         // This should be called every frame to update all entities containing a FreeCameraControllerComponent 
         void update(World* world, float deltaTime) {
-            // First of all, we search for an entity containing both a CameraComponent and a FreeCameraControllerComponent
-            // As soon as we find one, we break
-            CameraComponent* camera = nullptr;
+            // First of all, we search for an entity containing both a CameraComponent then the PlayerControllerComponent
+            // and lastly a CollisionComponent, hence camera and collision are components whose entity is the child of the player
+            // entity that contains the PlayerControllerComponent
 
+            // once we found each component we break (we only need a single component of each component type)
+            CameraComponent* camera = nullptr;
             PlayerControllerComponent *controller = nullptr;
             CollisionComponent *collider = nullptr;
             for(auto entity : world->getEntities()){
@@ -59,7 +59,7 @@ namespace our
                 }
             }
 
-            //check if game is over
+            //check if game is over, if so, prints a you win message
             if ( controller->coinsCollected == 4 && !gameOver){
                 std::cout << "You win!" << std::endl;
                 gameOver = true;
@@ -156,10 +156,10 @@ namespace our
 
 
             // get collider componenet
-            
             if (collider->collided.y == 1) {
                 velocity = 0;
             }
+
 
             if(app->getKeyboard().isPressed(GLFW_KEY_SPACE) && collider->collided.y==1) {
                 velocity = 5;
