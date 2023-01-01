@@ -87,7 +87,8 @@ namespace our
             // We get a reference to the entity's position and rotation
             glm::vec3& position = entity->localTransform.position;
             glm::vec3& parentRotation = entity->localTransform.rotation;
-
+            
+            // Get rotation matrices
             glm::vec3& rotation = childEntity->localTransform.rotation;
             glm::vec3& childPosition = childEntity->localTransform.position;
 
@@ -97,17 +98,20 @@ namespace our
 //////////////////////////////////////////////
             if(app->getMouse().isPressed(GLFW_MOUSE_BUTTON_1) ){
                 glm::vec2 delta = app->getMouse().getMouseDelta();
+                //  Z for free camera controller no player interaction
                 if (app->getKeyboard().isPressed(GLFW_KEY_Z)) {
+                    //Rotate camera towards direction
                     rotation.x -= delta.y * controller->rotationSensitivity; // The y-axis controls the pitch
                     rotation.y -= delta.x * controller->rotationSensitivity; // The x-axis controls the yaw
 
 
                     float radius = 1;
-
+                    // rotate the camera in a sphere keeping the player at the center and compnesating for the camera rotation
                     childPosition.x = radius * glm::sin(rotation.y) * glm::cos(rotation.x);
                     childPosition.z = radius * glm::cos(rotation.y) * glm::cos(rotation.x);
                     childPosition.y = -radius * glm::sin(rotation.x);
 
+                    //check that the sphere equation is satisfied
                     float normal = glm::sqrt(childPosition.x * childPosition.x + childPosition.y * childPosition.y + childPosition.z * childPosition.z);
                     std:: cout << "camera position: " << childPosition.x << ", " << childPosition.y << ", " << childPosition.z << ", " << normal << std::endl;
                 }
@@ -156,27 +160,36 @@ namespace our
 
 
             // get collider componenet
+            // turn the velocity to zero if player collided with ground
             if (collider->collided.y == 1) {
                 velocity = 0;
             }
 
+            // add velocity when player wants to jump and is collided with ground
 
             if(app->getKeyboard().isPressed(GLFW_KEY_SPACE) && collider->collided.y==1) {
                 velocity = 5;
             }
+
+            // max out the delta to prevent clipping
             
             if (deltaTime > 0.5) {
                 deltaTime = 0.1;
             }
+            // if player hasn't hit the ground activate the gravity component
             if (collider->collided.y == 0)
                 velocity += gravity * deltaTime;
+
+            // add terminal velocity
             if (velocity < -10) {
                 velocity = -8;
             }
+            // add terminal velocity
             if (velocity > 10) {
                 velocity = 10;
             }
 
+            // move distance with velocity to simulate gravity
             position.y += (deltaTime * velocity);
 
             // std::cout << "velocity: " << velocity << std::endl;

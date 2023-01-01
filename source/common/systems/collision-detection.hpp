@@ -20,21 +20,25 @@ namespace our
             // For each entity in the world
             for (auto entity : world->getEntities())
             {
-                // Get the movement component if it exists
+                // Get the collision component if it exists
                 CollisionComponent *collision = entity->getComponent<CollisionComponent>();
-                // If the movement component exists
+                // If the collision component exists
                 if (collision == nullptr)
                     continue;
                 // if the entity is the collider, this will be the n-child of the player, n = [0, inf]
                 if (collision->collider)
                 {
                     // loop intil the parent (player) is found
+                // to reduce computation we only check collisions for collider objects which are limited to moving objects 
+                if (collision->collider)
+                {
+                    // get the parent of the collider component to reference its location in the world
                     Entity *parent = entity;
                     while (parent->parent != nullptr)
                     {
                         parent = parent->parent;
                     }
-                    // save the position of the collider
+                    // set the last location for the collider to use in collision resolution
                     collision->lastPosition = parent->localTransform.position;
                 }
             }
