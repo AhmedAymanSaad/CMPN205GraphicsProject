@@ -182,10 +182,13 @@ namespace our {
         glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
         glDepthMask(GL_TRUE);
 
+        
         // If there is a postprocess material, bind the framebuffer
         if(postprocessMaterial){
             //TODO: (Req 11) bind the framebuffer
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, postprocessFrameBuffer);
+            glm::mat4 cameraPosition = camera->getOwner()->getLocalToWorldMatrix();
+            postprocessMaterial->shader->set ("CameraEye", glm::vec4(cameraPosition[3][0], cameraPosition[3][1], cameraPosition[3][2], 1.0f));
         }
 
         //TODO: (Req 9) Clear the color and depth buffers

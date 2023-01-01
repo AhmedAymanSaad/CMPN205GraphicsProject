@@ -1,6 +1,7 @@
 #version 330
 
 out vec2 tex_coord;
+out float depth;
 
 void main(){
 
@@ -22,4 +23,5 @@ void main(){
 
     gl_Position = vec4(positions[gl_VertexID], 0.0, 1.0);
     tex_coord = tex_coords[gl_VertexID];
+         = 0.1;
 }
