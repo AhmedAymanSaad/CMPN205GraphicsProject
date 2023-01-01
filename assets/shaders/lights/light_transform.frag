@@ -28,7 +28,7 @@ struct Light {
     vec3 diffuse;
     vec3 specular;
     vec3 ambient;
-
+    bool enabled = true;
     // Position is used for point and spot lights. Direction is used for directional and spot lights.
     vec3 position, direction;
     // Attentuation factors are used for point and spot lights.

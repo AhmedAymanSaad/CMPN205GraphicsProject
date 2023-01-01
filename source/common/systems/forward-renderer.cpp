@@ -212,6 +212,28 @@ namespace our {
             glm::mat4 cameraPosition = camera->getOwner()->getLocalToWorldMatrix();
             command.material->shader->set("camera_position",glm::vec3(cameraPosition[3].x , cameraPosition[3].y , cameraPosition[3].z));
             command.material->shader->set("light_count", light_count);
+            // if lit material
+             if(auto litMaterial = dynamic_cast<LitMaterial*>(command.material); litMaterial){
+                command.material->shader->set("material.ambient", litMaterial->ambient);
+                command.material->shader->set("material.diffuse", litMaterial->diffuse);
+                command.material->shader->set("material.specular", litMaterial->specular);
+                command.material->shader->set("material.shininess", litMaterial->shininess);
+            }
+            
+
+            for (int i = 0; i < light_count; i++) {
+                command.material->shader->set("lights[" + std::to_string(i) + "].position", lights[i]->position);
+                command.material->shader->set("lights[" + std::to_string(i) + "].type", int(lights[i]->type));
+                command.material->shader->set("lights[" + std::to_string(i) + "].direction", lights[i]->direction);
+                command.material->shader->set("lights[" + std::to_string(i) + "].diffuse", lights[i]->diffuse);
+                command.material->shader->set("lights[" + std::to_string(i) + "].specular", lights[i]->specular);
+                command.material->shader->set("lights[" + std::to_string(i) + "].ambient", lights[i]->ambient);
+                command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_constant", lights[i]->attenuation.constant);
+                command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_linear", lights[i]->attenuation.linear);
+                command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_quadratic", lights[i]->attenuation.quadratic);
+                command.material->shader->set("lights[" + std::to_string(i) + "].inner_angle", lights[i]->spot_angle.inner);
+                command.material->shader->set("lights[" + std::to_string(i) + "].outer_angle", lights[i]->spot_angle.outer);
+            }
             command.mesh->draw();
         }
 
@@ -262,6 +284,28 @@ namespace our {
             glm::mat4 cameraPosition = camera->getOwner()->getLocalToWorldMatrix();
             command.material->shader->set("camera_position",glm::vec3(cameraPosition[3].x , cameraPosition[3].y , cameraPosition[3].z));
             command.material->shader->set("light_count", light_count);
+            // if lit material
+             if(auto litMaterial = dynamic_cast<LitMaterial*>(command.material); litMaterial){
+                command.material->shader->set("material.ambient", litMaterial->ambient);
+                command.material->shader->set("material.diffuse", litMaterial->diffuse);
+                command.material->shader->set("material.specular", litMaterial->specular);
+                command.material->shader->set("material.shininess", litMaterial->shininess);
+            }
+            
+
+            for (int i = 0; i < light_count; i++) {
+                command.material->shader->set("lights[" + std::to_string(i) + "].position", lights[i]->position);
+                command.material->shader->set("lights[" + std::to_string(i) + "].type", int(lights[i]->type));
+                command.material->shader->set("lights[" + std::to_string(i) + "].direction", lights[i]->direction);
+                command.material->shader->set("lights[" + std::to_string(i) + "].diffuse", lights[i]->diffuse);
+                command.material->shader->set("lights[" + std::to_string(i) + "].specular", lights[i]->specular);
+                command.material->shader->set("lights[" + std::to_string(i) + "].ambient", lights[i]->ambient);
+                command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_constant", lights[i]->attenuation.constant);
+                command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_linear", lights[i]->attenuation.linear);
+                command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_quadratic", lights[i]->attenuation.quadratic);
+                command.material->shader->set("lights[" + std::to_string(i) + "].inner_angle", lights[i]->spot_angle.inner);
+                command.material->shader->set("lights[" + std::to_string(i) + "].outer_angle", lights[i]->spot_angle.outer);
+            }
             command.mesh->draw();
         }
         

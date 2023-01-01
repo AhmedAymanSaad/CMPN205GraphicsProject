@@ -55,14 +55,10 @@ namespace our {
     class LitMaterial : public TexturedMaterial {
     public:
 
-        struct MaterialProperties {
-            glm::vec3 ambient;
-            glm::vec3 diffuse;
-            glm::vec3 specular;
-            float shininess;
-        };
-        
-        MaterialProperties matTemp;
+        glm::vec3 ambient;
+        glm::vec3 diffuse;
+        glm::vec3 specular;
+        float shininess;
 
         void setup() const override;
         void deserialize(const nlohmann::json& data) override;
