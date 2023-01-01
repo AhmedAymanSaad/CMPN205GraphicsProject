@@ -2,7 +2,26 @@
 
 // We include the common light functions and structures.
 // Note that GLSL doesn't support "#include" by default but we the library "stb_include" to recursively include the files as a string preprocessing phase.
-#include "light_common.glsl"
+// #include "light_common.glsl"
+
+float calculate_lambert(vec3 normal, vec3 light_direction){
+    return max(0.0f, dot(normal, -light_direction));
+}
+
+// This will be used to compute the phong specular.
+float calculate_phong(vec3 normal, vec3 light_direction, vec3 view, float shininess){
+    vec3 reflected = reflect(light_direction, normal);
+    return pow(max(0.0f, dot(view, reflected)), shininess);
+}
+
+// This contains all the material properties in a single struct.
+struct Material {
+    vec3 diffuse;
+    vec3 specular;
+    vec3 ambient;
+    float shininess;
+};
+
 
 in Varyings {
     vec4 color;
@@ -28,7 +47,7 @@ struct Light {
     vec3 diffuse;
     vec3 specular;
     vec3 ambient;
-    bool enabled = true;
+    bool enabled;
     // Position is used for point and spot lights. Direction is used for directional and spot lights.
     vec3 position, direction;
     // Attentuation factors are used for point and spot lights.

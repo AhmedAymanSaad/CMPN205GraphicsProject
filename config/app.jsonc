@@ -103,8 +103,8 @@
                     "sampler": "pixelated"
                 },
                 "grass": {
-                    "type": "lit",
-                    "shader": "lit",
+                    "type": "textured",
+                    "shader": "textured",
                     "pipelineState": {
                         "faceCulling": {
                             "enabled": false
@@ -119,22 +119,6 @@
                         1,
                         1
                     ],
-                    "diffuse": [
-                        0.96,
-                        0.9,
-                        0.64
-                    ],
-                    "specular": [
-                        0.4,
-                        0.4,
-                        0.4
-                    ],
-                    "ambient": [
-                        0.96,
-                        0.9,
-                        0.64
-                    ],
-                    "shininess": 10,
                     "texture": "grass",
                     "sampler": "default"
                 },
@@ -216,21 +200,21 @@
                         1
                     ],
                     "ambient": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "diffuse": [
                         0.1,
                         0.1,
                         0.1
                     ],
-                    "diffuse": [
-                        0.5,
-                        0.5,
-                        0.5
-                    ],
                     "specular": [
-                        0.5,
-                        0.5,
-                        0.5
+                        0,
+                        0,
+                        0
                     ],
-                    "shininess": 0.5,
+                    "shininess": 0,
                     "texture": "wood",
                     "sampler": "default"
                 },
@@ -319,9 +303,9 @@
                         "type": "Light",
                         "light_type": 0,
                         "diffuse": [
-                            1,
-                            1,
-                            1
+                            0.3,
+                            0.3,
+                            0.3
                         ],
                         "ambient": [
                             0.1,
@@ -329,20 +313,20 @@
                             0.1
                         ],
                         "specular": [
-                            1,
-                            1,
-                            1
+                            0.2,
+                            0.2,
+                            0.2
                         ],
                         "direction": [
+                            1,
                             -1,
-                            -1,
-                            -1
+                            1
                         ]
                     },
                     {
                         "type": "Mesh Renderer",
                         "mesh": "cube",
-                        "material": "metal"
+                        "material": "glass"
                     }
                 ]
             },
@@ -386,26 +370,26 @@
                         ],
                         "rotation": [
                             0,
-                            0,
+                            -180,
                             0
                         ],
                         "scale": [
-                            0.1,
-                            0.1,
-                            0.1
+                            0.15,
+                            0.15,
+                            0.15
                         ],
                         "components": [
                             {
                                 "type": "Mesh Renderer",
-                                "mesh": "cube",
-                                "material": "metal"
+                                "mesh": "monkey",
+                                "material": "monkey"
                             },
                             {
                                 "type": "Collision",
                                 "boundingBox": [
-                                    0.1,
-                                    0.1,
-                                    0.1
+                                    0.15,
+                                    0.15,
+                                    0.15
                                 ],
                                 "collider": true
                             }
@@ -595,33 +579,6 @@
                     }
                 ]
             },
-            // {
-            //     "rotation": [
-            //         -45,
-            //         0,
-            //         0
-            //     ],
-            //     "components": [
-            //         {
-            //             "type": "Mesh Renderer",
-            //             "mesh": "monkey",
-            //             "material": "monkey"
-            //         },
-            //         {
-            //             "type": "Movement",
-            //             "linearVelocity": [
-            //                 0,
-            //                 0.1,
-            //                 0
-            //             ],
-            //             "angularVelocity": [
-            //                 0,
-            //                 45,
-            //                 0
-            //             ]
-            //         }
-            //     ]
-            // },
             {
                 "position": [
                     0,
@@ -648,7 +605,7 @@
                         "type": "Collision",
                         "boundingBox": [
                             40,
-                            0.1,
+                            0.3,
                             40
                         ],
                         "collider": false,
@@ -656,126 +613,6 @@
                     }
                 ]
             },
-            // {
-            //     "position": [
-            //         0,
-            //         1,
-            //         2
-            //     ],
-            //     "rotation": [
-            //         0,
-            //         0,
-            //         0
-            //     ],
-            //     "scale": [
-            //         2,
-            //         2,
-            //         2
-            //     ],
-            //     "components": [
-            //         {
-            //             "type": "Mesh Renderer",
-            //             "mesh": "plane",
-            //             "material": "glass"
-            //         }
-            //     ]
-            // },
-            // {
-            //     "position": [
-            //         0,
-            //         1,
-            //         -2
-            //     ],
-            //     "rotation": [
-            //         0,
-            //         0,
-            //         0
-            //     ],
-            //     "scale": [
-            //         2,
-            //         2,
-            //         2
-            //     ],
-            //     "components": [
-            //         {
-            //             "type": "Mesh Renderer",
-            //             "mesh": "plane",
-            //             "material": "glass"
-            //         }
-            //     ]
-            // },
-            // {
-            //     "position": [
-            //         2,
-            //         1,
-            //         0
-            //     ],
-            //     "rotation": [
-            //         0,
-            //         90,
-            //         0
-            //     ],
-            //     "scale": [
-            //         2,
-            //         2,
-            //         2
-            //     ],
-            //     "components": [
-            //         {
-            //             "type": "Mesh Renderer",
-            //             "mesh": "plane",
-            //             "material": "glass"
-            //         }
-            //     ]
-            // },
-            // {
-            //     "position": [
-            //         -2,
-            //         1,
-            //         0
-            //     ],
-            //     "rotation": [
-            //         0,
-            //         90,
-            //         0
-            //     ],
-            //     "scale": [
-            //         2,
-            //         2,
-            //         2
-            //     ],
-            //     "components": [
-            //         {
-            //             "type": "Mesh Renderer",
-            //             "mesh": "plane",
-            //             "material": "glass"
-            //         }
-            //     ]
-            // },
-            // {
-            //     "position": [
-            //         0,
-            //         3,
-            //         0
-            //     ],
-            //     "rotation": [
-            //         90,
-            //         0,
-            //         0
-            //     ],
-            //     "scale": [
-            //         2,
-            //         2,
-            //         2
-            //     ],
-            //     "components": [
-            //         {
-            //             "type": "Mesh Renderer",
-            //             "mesh": "plane",
-            //             "material": "wood"
-            //         }
-            //     ]
-            // },
             {
                 "position": [
                     -40,
@@ -808,118 +645,6 @@
                     }
                 ]
             },
-            // {
-            //     "position": [
-            //         10,
-            //         10,
-            //         0
-            //     ],
-            //     "rotation": [
-            //         -45,
-            //         0,
-            //         0
-            //     ],
-            //     "components": [
-            //         {
-            //             "type": "Mesh Renderer",
-            //             "mesh": "GoldCoinBlank",
-            //             "material": "gold"
-            //         },
-            //         {
-            //             "type": "Movement",
-            //             "linearVelocity": [
-            //                 0,
-            //                 0.1,
-            //                 0
-            //             ],
-            //             "angularVelocity": [
-            //                 0,
-            //                 45,
-            //                 0
-            //             ]
-            //         }
-            //     ]
-            // },
-            // {
-            //     "position": [
-            //         -10,
-            //         -10,
-            //         0
-            //     ],
-            //     "rotation": [
-            //         0,
-            //         0,
-            //         0
-            //     ],
-            //     "scale": [
-            //         1,
-            //         1,
-            //         1
-            //     ],
-            //     "components": [
-            //         {
-            //             "type": "Mesh Renderer",
-            //             "mesh": "GoldCoinBlank",
-            //             "material": "grass"
-            //         }
-            //     ]
-            // },
-            // {
-            //     "position": [
-            //         -20,
-            //         -20,
-            //         0
-            //     ],
-            //     "rotation": [
-            //         0,
-            //         0,
-            //         0
-            //     ],
-            //     "scale": [
-            //         1,
-            //         1,
-            //         1
-            //     ],
-            //     "components": [
-            //         {
-            //             "type": "Mesh Renderer",
-            //             "mesh": "cube",
-            //             "material": "grass"
-            //         }
-            //     ]
-            // },
-            // {
-            //     "position": [
-            //         10,
-            //         10,
-            //         0
-            //     ],
-            //     "rotation": [
-            //         -45,
-            //         0,
-            //         0
-            //     ],
-            //     "components": [
-            //         {
-            //             "type": "Mesh Renderer",
-            //             "mesh": "GoldCoinBlank",
-            //             "material": "gold"
-            //         },
-            //         {
-            //             "type": "Movement",
-            //             "linearVelocity": [
-            //                 0,
-            //                 0.1,
-            //                 0
-            //             ],
-            //             "angularVelocity": [
-            //                 0,
-            //                 45,
-            //                 0
-            //             ]
-            //         }
-            //     ]
-            // },
             { //container2
                 "position": [
                     10,

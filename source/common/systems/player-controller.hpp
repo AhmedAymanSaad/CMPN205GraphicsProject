@@ -179,8 +179,8 @@ namespace our
 
             position.y += (deltaTime * velocity);
 
-            std::cout << "velocity: " << velocity << std::endl;
-            std::cout << "position: " << position.y << std::endl;
+            // std::cout << "velocity: " << velocity << std::endl;
+            // std::cout << "position: " << position.y << std::endl;
             
             
         }

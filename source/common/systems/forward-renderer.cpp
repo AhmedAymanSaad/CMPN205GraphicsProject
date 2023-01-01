@@ -218,22 +218,26 @@ namespace our {
                 command.material->shader->set("material.diffuse", litMaterial->diffuse);
                 command.material->shader->set("material.specular", litMaterial->specular);
                 command.material->shader->set("material.shininess", litMaterial->shininess);
+                for (int i = 0; i < light_count; i++) {
+                    int currentType=0;
+                    if (lights[i]->type == LightType::POINT)
+                        currentType=1;
+                    else if (lights[i]->type == LightType::SPOT)
+                        currentType=2;
+                    command.material->shader->set("lights[" + std::to_string(i) + "].position", lights[i]->position);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].type", currentType);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].direction", lights[i]->direction);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].diffuse", lights[i]->diffuse);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].specular", lights[i]->specular);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].ambient", lights[i]->ambient);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_constant", lights[i]->attenuation.constant);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_linear", lights[i]->attenuation.linear);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_quadratic", lights[i]->attenuation.quadratic);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].inner_angle", lights[i]->spot_angle.inner);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].outer_angle", lights[i]->spot_angle.outer);
+                }
             }
             
-
-            for (int i = 0; i < light_count; i++) {
-                command.material->shader->set("lights[" + std::to_string(i) + "].position", lights[i]->position);
-                command.material->shader->set("lights[" + std::to_string(i) + "].type", int(lights[i]->type));
-                command.material->shader->set("lights[" + std::to_string(i) + "].direction", lights[i]->direction);
-                command.material->shader->set("lights[" + std::to_string(i) + "].diffuse", lights[i]->diffuse);
-                command.material->shader->set("lights[" + std::to_string(i) + "].specular", lights[i]->specular);
-                command.material->shader->set("lights[" + std::to_string(i) + "].ambient", lights[i]->ambient);
-                command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_constant", lights[i]->attenuation.constant);
-                command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_linear", lights[i]->attenuation.linear);
-                command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_quadratic", lights[i]->attenuation.quadratic);
-                command.material->shader->set("lights[" + std::to_string(i) + "].inner_angle", lights[i]->spot_angle.inner);
-                command.material->shader->set("lights[" + std::to_string(i) + "].outer_angle", lights[i]->spot_angle.outer);
-            }
             command.mesh->draw();
         }
 
@@ -290,22 +294,26 @@ namespace our {
                 command.material->shader->set("material.diffuse", litMaterial->diffuse);
                 command.material->shader->set("material.specular", litMaterial->specular);
                 command.material->shader->set("material.shininess", litMaterial->shininess);
+                for (int i = 0; i < light_count; i++) {
+                    int currentType=0;
+                    if (lights[i]->type == LightType::POINT)
+                        currentType=1;
+                    else if (lights[i]->type == LightType::SPOT)
+                        currentType=2;
+                    command.material->shader->set("lights[" + std::to_string(i) + "].position", lights[i]->position);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].type", currentType);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].direction", lights[i]->direction);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].diffuse", lights[i]->diffuse);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].specular", lights[i]->specular);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].ambient", lights[i]->ambient);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_constant", lights[i]->attenuation.constant);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_linear", lights[i]->attenuation.linear);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_quadratic", lights[i]->attenuation.quadratic);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].inner_angle", lights[i]->spot_angle.inner);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].outer_angle", lights[i]->spot_angle.outer);
+                }
             }
             
-
-            for (int i = 0; i < light_count; i++) {
-                command.material->shader->set("lights[" + std::to_string(i) + "].position", lights[i]->position);
-                command.material->shader->set("lights[" + std::to_string(i) + "].type", int(lights[i]->type));
-                command.material->shader->set("lights[" + std::to_string(i) + "].direction", lights[i]->direction);
-                command.material->shader->set("lights[" + std::to_string(i) + "].diffuse", lights[i]->diffuse);
-                command.material->shader->set("lights[" + std::to_string(i) + "].specular", lights[i]->specular);
-                command.material->shader->set("lights[" + std::to_string(i) + "].ambient", lights[i]->ambient);
-                command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_constant", lights[i]->attenuation.constant);
-                command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_linear", lights[i]->attenuation.linear);
-                command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_quadratic", lights[i]->attenuation.quadratic);
-                command.material->shader->set("lights[" + std::to_string(i) + "].inner_angle", lights[i]->spot_angle.inner);
-                command.material->shader->set("lights[" + std::to_string(i) + "].outer_angle", lights[i]->spot_angle.outer);
-            }
             command.mesh->draw();
         }
         
@@ -319,7 +327,7 @@ namespace our {
             postprocessMaterial->setup();
             glBindVertexArray(postProcessVertexArray);
             glDrawArrays(GL_TRIANGLES, GLint(0), GLsizei(3));
-            glBindVertexArray(0);
+            // glBindVertexArray(0);
      }
     }
 
