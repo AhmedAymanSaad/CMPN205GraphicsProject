@@ -41,24 +41,28 @@ our::Mesh* our::mesh_utils::loadOBJ(const std::string& filename) {
             Vertex vertex = {};
 
             // Read the data for a vertex from the "attrib" object
-            vertex.position = {
+            if  (attrib.vertices.size()!=0)
+                vertex.position = {
                     attrib.vertices[3 * index.vertex_index + 0],
                     attrib.vertices[3 * index.vertex_index + 1],
                     attrib.vertices[3 * index.vertex_index + 2]
-            };
-
+                };
+            
+            
+            if (attrib.normals.size()!=0)
             vertex.normal = {
                     attrib.normals[3 * index.normal_index + 0],
                     attrib.normals[3 * index.normal_index + 1],
                     attrib.normals[3 * index.normal_index + 2]
             };
 
+            if (attrib.texcoords.size()!=0)
             vertex.tex_coord = {
                     attrib.texcoords[2 * index.texcoord_index + 0],
                     attrib.texcoords[2 * index.texcoord_index + 1]
             };
 
-
+            if (attrib.colors.size()!=0)
             vertex.color = {
                     attrib.colors[3 * index.vertex_index + 0] * 255,
                     attrib.colors[3 * index.vertex_index + 1] * 255,

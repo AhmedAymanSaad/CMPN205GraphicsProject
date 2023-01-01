@@ -52,11 +52,12 @@ namespace our {
         // Then each of these elements are deleted.
         void deleteMarkedEntities(){
             //TODO: (Req 8) Remove and delete all the entities that have been marked for removal
-            for (const auto& entity : markedForRemoval) {
-                markedForRemoval.erase(entity);
+            for (auto entity : markedForRemoval)
+            {
                 entities.erase(entity);
                 delete entity;
             }
+            markedForRemoval.clear();
 
         }
 

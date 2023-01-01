@@ -102,7 +102,7 @@ namespace our {
             postprocessMaterial->sampler = postprocessSampler;
             // The default options are fine but we don't need to interact with the depth buffer
             // so it is more performant to disable the depth mask
-            postprocessMaterial->pipelineState.depthMask = false;
+            postprocessMaterial->pipelineState.depthMask = true;
         }
     }
 
@@ -168,6 +168,16 @@ namespace our {
             return false;
         });
 
+        int light_count = 0;
+        for(auto entity: world->getEntities()){
+            if(auto light = entity->getComponent<LightComponent>(); light){
+                lights.push_back(light);
+            }
+        }
+        light_count = lights.size();
+        
+        
+
         //TODO: (Req 9) Get the camera ViewProjection matrix and store it in VP
         glm::mat4 VP = camera->getProjectionMatrix(windowSize) * camera->getViewMatrix();
         
@@ -186,6 +196,8 @@ namespace our {
         if(postprocessMaterial){
             //TODO: (Req 11) bind the framebuffer
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, postprocessFrameBuffer);
+            postprocessMaterial->shader->set("xs", windowSize.x);
+            postprocessMaterial->shader->set("ys", windowSize.y);
         }
 
         //TODO: (Req 9) Clear the color and depth buffers
@@ -196,8 +208,42 @@ namespace our {
         for ( auto command : opaqueCommands) {
             command.material->setup();
             command.material->shader->set("transform", VP * command.localToWorld);
+            command.material->shader->set("object_to_world", command.localToWorld);
+            command.material->shader->set("object_to_world_inv_transpose", glm::inverse(command.localToWorld));
+            command.material->shader->set("view_projection", VP);
+            glm::mat4 cameraPosition = camera->getOwner()->getLocalToWorldMatrix();
+            command.material->shader->set("camera_position",glm::vec3(cameraPosition[3].x , cameraPosition[3].y , cameraPosition[3].z));
+            command.material->shader->set("light_count", light_count);
+            // if lit material
+             if(auto litMaterial = dynamic_cast<LitMaterial*>(command.material); litMaterial){
+                command.material->shader->set("material.ambient", litMaterial->ambient);
+                command.material->shader->set("material.diffuse", litMaterial->diffuse);
+                command.material->shader->set("material.specular", litMaterial->specular);
+                command.material->shader->set("material.shininess", litMaterial->shininess);
+                for (int i = 0; i < light_count; i++) {
+                    int currentType=0;
+                    if (lights[i]->type == LightType::POINT)
+                        currentType=1;
+                    else if (lights[i]->type == LightType::SPOT)
+                        currentType=2;
+                    command.material->shader->set("lights[" + std::to_string(i) + "].position", lights[i]->position);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].type", currentType);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].direction", lights[i]->direction);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].diffuse", lights[i]->diffuse);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].specular", lights[i]->specular);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].ambient", lights[i]->ambient);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_constant", lights[i]->attenuation.constant);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_linear", lights[i]->attenuation.linear);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_quadratic", lights[i]->attenuation.quadratic);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].inner_angle", lights[i]->spot_angle.inner);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].outer_angle", lights[i]->spot_angle.outer);
+                }
+            }
+            
             command.mesh->draw();
         }
+
+
         
         // If there is a sky material, draw the sky
         if(this->skyMaterial){
@@ -238,6 +284,38 @@ namespace our {
         for ( auto command : transparentCommands) {
             command.material->setup();
             command.material->shader->set("transform", VP * command.localToWorld);
+            command.material->shader->set("object_to_world", command.localToWorld);
+            command.material->shader->set("object_to_world_inv_transpose", glm::inverse(command.localToWorld));
+            command.material->shader->set("view_projection", VP);
+            glm::mat4 cameraPosition = camera->getOwner()->getLocalToWorldMatrix();
+            command.material->shader->set("camera_position",glm::vec3(cameraPosition[3].x , cameraPosition[3].y , cameraPosition[3].z));
+            command.material->shader->set("light_count", light_count);
+            // if lit material
+             if(auto litMaterial = dynamic_cast<LitMaterial*>(command.material); litMaterial){
+                command.material->shader->set("material.ambient", litMaterial->ambient);
+                command.material->shader->set("material.diffuse", litMaterial->diffuse);
+                command.material->shader->set("material.specular", litMaterial->specular);
+                command.material->shader->set("material.shininess", litMaterial->shininess);
+                for (int i = 0; i < light_count; i++) {
+                    int currentType=0;
+                    if (lights[i]->type == LightType::POINT)
+                        currentType=1;
+                    else if (lights[i]->type == LightType::SPOT)
+                        currentType=2;
+                    command.material->shader->set("lights[" + std::to_string(i) + "].position", lights[i]->position);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].type", currentType);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].direction", lights[i]->direction);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].diffuse", lights[i]->diffuse);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].specular", lights[i]->specular);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].ambient", lights[i]->ambient);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_constant", lights[i]->attenuation.constant);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_linear", lights[i]->attenuation.linear);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].attenuation_quadratic", lights[i]->attenuation.quadratic);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].inner_angle", lights[i]->spot_angle.inner);
+                    command.material->shader->set("lights[" + std::to_string(i) + "].outer_angle", lights[i]->spot_angle.outer);
+                }
+            }
+            
             command.mesh->draw();
         }
         
@@ -251,7 +329,7 @@ namespace our {
             postprocessMaterial->setup();
             glBindVertexArray(postProcessVertexArray);
             glDrawArrays(GL_TRIANGLES, GLint(0), GLsizei(3));
-            glBindVertexArray(0);
+            // glBindVertexArray(0);
      }
     }
 

@@ -23,7 +23,7 @@ namespace our {
 
         // This method binds this sampler to the given texture unit
         void bind(GLuint textureUnit) const {
-           glBindSampler(textureUnit, name); //texture unit is the index of the texture unit to which the sampler is bound
+            glBindSampler(textureUnit, name); //texture unit is the index of the texture unit to which the sampler is bound
         }
         // This static method ensures that no sampler is bound to the given texture unit
         static void unbind(GLuint textureUnit){
