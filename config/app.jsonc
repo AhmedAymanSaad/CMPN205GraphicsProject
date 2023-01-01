@@ -103,8 +103,8 @@
                     "sampler": "pixelated"
                 },
                 "grass": {
-                    "type": "textured",
-                    "shader": "textured",
+                    "type": "lit",
+                    "shader": "lit",
                     "pipelineState": {
                         "faceCulling": {
                             "enabled": false
@@ -119,6 +119,22 @@
                         1,
                         1
                     ],
+                    "diffuse": [
+                        0.96,
+                        0.9,
+                        0.64
+                    ],
+                    "specular": [
+                        0.4,
+                        0.4,
+                        0.4
+                    ],
+                    "ambient": [
+                        0.96,
+                        0.9,
+                        0.64
+                    ],
+                    "shininess": 10,
                     "texture": "grass",
                     "sampler": "default"
                 },
@@ -183,8 +199,8 @@
                     "sampler": "default"
                 },
                 "wood": {
-                    "type": "textured",
-                    "shader": "textured",
+                    "type": "lit",
+                    "shader": "lit",
                     "pipelineState": {
                         "faceCulling": {
                             "enabled": true
@@ -199,6 +215,22 @@
                         1,
                         1
                     ],
+                    "ambient": [
+                        0.1,
+                        0.1,
+                        0.1
+                    ],
+                    "diffuse": [
+                        0.5,
+                        0.5,
+                        0.5
+                    ],
+                    "specular": [
+                        0.5,
+                        0.5,
+                        0.5
+                    ],
+                    "shininess": 0.5,
                     "texture": "wood",
                     "sampler": "default"
                 },
@@ -265,6 +297,55 @@
             }
         },
         "world": [
+            {
+                // directional light
+                "position": [
+                    0,
+                    5,
+                    0
+                ],
+                "rotation": [
+                    0,
+                    0,
+                    0
+                ],
+                "scale": [
+                    0.1,
+                    0.1,
+                    0.1
+                ],
+                "components": [
+                    {
+                        "type": "Light",
+                        "light_type": 0,
+                        "diffuse": [
+                            1,
+                            1,
+                            1
+                        ],
+                        "ambient": [
+                            0.1,
+                            0.1,
+                            0.1
+                        ],
+                        "specular": [
+                            1,
+                            1,
+                            1
+                        ],
+                        "direction": [
+                            -1,
+                            -1,
+                            -1
+                        ]
+                    },
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "cube",
+                        "material": "metal"
+                    }
+                ]
+            },
             {
                 "position": [
                     0,

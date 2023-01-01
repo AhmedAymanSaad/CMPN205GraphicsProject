@@ -61,9 +61,9 @@ namespace our
                     glm::vec3 collisionDirection = collision->collided;
                     if (collisionDirection.x != 0 || collisionDirection.y != 0 || collisionDirection.z != 0)
                     {
-                        std::cout << "Collision Direction " << collisionDirection.x << ", " << collisionDirection.y << ", " << collisionDirection.z << std::endl;
-                        std::cout << "Current position: " << parent->localTransform.position.x << ", " << parent->localTransform.position.y << ", " << parent->localTransform.position.z << std::endl;
-                        std::cout << "Last position: " << collision->lastPosition.x << ", " << collision->lastPosition.y << ", " << collision->lastPosition.z << std::endl;
+                        //std::cout << "Collision Direction " << collisionDirection.x << ", " << collisionDirection.y << ", " << collisionDirection.z << std::endl;
+                        //std::cout << "Current position: " << parent->localTransform.position.x << ", " << parent->localTransform.position.y << ", " << parent->localTransform.position.z << std::endl;
+                        //std::cout << "Last position: " << collision->lastPosition.x << ", " << collision->lastPosition.y << ", " << collision->lastPosition.z << std::endl;
                         if (collisionDirection.x == 1)
                         {
                             parent->localTransform.position.x = collision->lastPosition.x;
