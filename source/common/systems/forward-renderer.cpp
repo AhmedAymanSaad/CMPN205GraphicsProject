@@ -102,7 +102,7 @@ namespace our {
             postprocessMaterial->sampler = postprocessSampler;
             // The default options are fine but we don't need to interact with the depth buffer
             // so it is more performant to disable the depth mask
-            postprocessMaterial->pipelineState.depthMask = false;
+            postprocessMaterial->pipelineState.depthMask = true;
         }
     }
 
@@ -186,6 +186,8 @@ namespace our {
         if(postprocessMaterial){
             //TODO: (Req 11) bind the framebuffer
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, postprocessFrameBuffer);
+            postprocessMaterial->shader->set("xs", windowSize.x);
+            postprocessMaterial->shader->set("ys", windowSize.y);
         }
 
         //TODO: (Req 9) Clear the color and depth buffers
