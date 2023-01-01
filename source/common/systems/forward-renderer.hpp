@@ -33,7 +33,7 @@ namespace our
         // These are two vectors in which we will store the opaque and the transparent commands.
         // We define them here (instead of being local to the "render" function) as an optimization to prevent reallocating them every frame
         std::vector<RenderCommand> opaqueCommands;
-        std::vector<LightComponent*> lights;
+        std::vector<LightComponent*> lights; // array containing all lights on map
         std::vector<RenderCommand> transparentCommands;
         // Objects used for rendering a skybox
         Mesh* skySphere;

@@ -7,7 +7,7 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/trigonometric.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
-  
+
 namespace our
 {
 
@@ -29,17 +29,18 @@ namespace our
                 if (collision->collider)
                 {
                     // loop intil the parent (player) is found
-                // to reduce computation we only check collisions for collider objects which are limited to moving objects 
-                if (collision->collider)
-                {
-                    // get the parent of the collider component to reference its location in the world
-                    Entity *parent = entity;
-                    while (parent->parent != nullptr)
+                    // to reduce computation we only check collisions for collider objects which are limited to moving objects
+                    if (collision->collider)
                     {
-                        parent = parent->parent;
+                        // get the parent of the collider component to reference its location in the world
+                        Entity *parent = entity;
+                        while (parent->parent != nullptr)
+                        {
+                            parent = parent->parent;
+                        }
+                        // set the last location for the collider to use in collision resolution
+                        collision->lastPosition = parent->localTransform.position;
                     }
-                    // set the last location for the collider to use in collision resolution
-                    collision->lastPosition = parent->localTransform.position;
                 }
             }
         }
@@ -72,10 +73,10 @@ namespace our
                     // if the player is colliding with something, any direction
                     if (collisionDirection.x != 0 || collisionDirection.y != 0 || collisionDirection.z != 0)
                     {
-                        //std::cout << "Collision Direction " << collisionDirection.x << ", " << collisionDirection.y << ", " << collisionDirection.z << std::endl;
-                        //std::cout << "Current position: " << parent->localTransform.position.x << ", " << parent->localTransform.position.y << ", " << parent->localTransform.position.z << std::endl;
-                        //std::cout << "Last position: " << collision->lastPosition.x << ", " << collision->lastPosition.y << ", " << collision->lastPosition.z << std::endl;
-                        // if the player is colliding with something in the x axis
+                        // std::cout << "Collision Direction " << collisionDirection.x << ", " << collisionDirection.y << ", " << collisionDirection.z << std::endl;
+                        // std::cout << "Current position: " << parent->localTransform.position.x << ", " << parent->localTransform.position.y << ", " << parent->localTransform.position.z << std::endl;
+                        // std::cout << "Last position: " << collision->lastPosition.x << ", " << collision->lastPosition.y << ", " << collision->lastPosition.z << std::endl;
+                        //  if the player is colliding with something in the x axis
                         if (collisionDirection.x == 1)
                         {
                             // then we reset the x position to the last position before the collision
@@ -133,21 +134,22 @@ namespace our
 
                             // check if the player is colliding with a ground, then we set the y axis to 1
                             // meaning that it is colliding in the y axis
-                            if (collidedWith->ground ){
+                            if (collidedWith->ground)
+                            {
                                 collision->collided.y = 1;
-                                continue;   
+                                continue;
                             }
                             // check if the player is colliding with a coin, then we mark the coin for removal
                             // to give the collecting effect
-                            if (collidedWith->coin){
+                            if (collidedWith->coin)
+                            {
                                 collidedWith->getOwner()->getWorld()->markForRemoval(collidedWith->getOwner());
                                 // collidedWith->getOwner()->getWorld()->deleteMarkedEntities();
                                 // add 1 to the coins collected
                                 colliderEntity->parent->getComponent<PlayerControllerComponent>()->coinsCollected += 1;
-                                continue; 
+                                continue;
                             }
 
-                          
                             // 1 = right, 2 = left, 3 = top, 4 = bottom, 5 = front, 6 = back
                             glm::vec3 collidedWithFace1 = glm::vec3(collidedWithPosition[3].x + collidedWith->boundingBox.x, collidedWithPosition[3].y, collidedWithPosition[3].z);
                             glm::vec3 collidedWithFace2 = glm::vec3(collidedWithPosition[3].x - collidedWith->boundingBox.x, collidedWithPosition[3].y, collidedWithPosition[3].z);
@@ -156,7 +158,6 @@ namespace our
                             glm::vec3 collidedWithFace5 = glm::vec3(collidedWithPosition[3].x, collidedWithPosition[3].y, collidedWithPosition[3].z + collidedWith->boundingBox.z);
                             glm::vec3 collidedWithFace6 = glm::vec3(collidedWithPosition[3].x, collidedWithPosition[3].y, collidedWithPosition[3].z - collidedWith->boundingBox.z);
 
-                            
                             // get the 6 faces of the collider
                             // 1 = right, 2 = left, 3 = top, 4 = bottom, 5 = front, 6 = back
                             glm::vec3 colliderFace1 = glm::vec3(colliderEntityPosition[3].x + collision->boundingBox.x, colliderEntityPosition[3].y, colliderEntityPosition[3].z);
@@ -166,62 +167,68 @@ namespace our
                             glm::vec3 colliderFace5 = glm::vec3(colliderEntityPosition[3].x, colliderEntityPosition[3].y, colliderEntityPosition[3].z + collision->boundingBox.z);
                             glm::vec3 colliderFace6 = glm::vec3(colliderEntityPosition[3].x, colliderEntityPosition[3].y, colliderEntityPosition[3].z - collision->boundingBox.z);
 
-                            if (colliderFace4.y<collidedWithFace3.y && colliderFace4.y>collidedWithFace4.y && colliderFace3.y<collidedWithFace3.y && colliderFace3.y>collidedWithFace4.y){
-                                collision->collided.x = 1; 
+                            // check if collider is colliding with a wall
+                            if (colliderFace4.y < collidedWithFace3.y && colliderFace4.y > collidedWithFace4.y && colliderFace3.y < collidedWithFace3.y && colliderFace3.y > collidedWithFace4.y)
+                            {
+                                collision->collided.x = 1;
                                 continue;
                             }
 
                             // check if the difference betweeen y of the top face of the collider and the bottom face of the collidedWith is smaller than that of the x and y
-                            if (colliderFace4.y<collidedWithFace3.y && colliderFace4.y>collidedWithFace4.y)
+                            if (colliderFace4.y < collidedWithFace3.y && colliderFace4.y > collidedWithFace4.y)
                             {
+
+                                // check if collider is partially colliding (almost making a jump)
                                 double diffY = colliderFace4.y - collidedWithFace3.y;
                                 double diffZ = colliderFace4.z - collidedWithFace3.z;
                                 if (abs(diffY) > abs(0.01))
                                 {
+                                    // set collision with sides and ground to 1 (true)
                                     collision->collided.x = 1;
                                     collision->collided.y = 1;
                                     continue;
                                 }
-                                //check if they are colliding on the x and z axis
+                                // check if they are colliding on the x and z axis
                                 bool collisionX = (colliderFace4.x + collision->boundingBox.x > collidedWithFace3.x - collidedWith->boundingBox.x && colliderFace4.x + collision->boundingBox.x < collidedWithFace3.x + collidedWith->boundingBox.x) || (colliderFace4.x - collision->boundingBox.x < collidedWithFace3.x + collidedWith->boundingBox.x && colliderFace4.x - collision->boundingBox.x > collidedWithFace3.x - collidedWith->boundingBox.x);
-                                bool collisionZ = (colliderFace4.z  + collision->boundingBox.z > collidedWithFace3.z - collidedWith->boundingBox.z && colliderFace4.z + collision->boundingBox.z < collidedWithFace3.z + collidedWith->boundingBox.z) || (colliderFace4.z - collision->boundingBox.z < collidedWithFace3.z + collidedWith->boundingBox.z && colliderFace4.z - collision->boundingBox.z > collidedWithFace3.z - collidedWith->boundingBox.z);
+                                bool collisionZ = (colliderFace4.z + collision->boundingBox.z > collidedWithFace3.z - collidedWith->boundingBox.z && colliderFace4.z + collision->boundingBox.z < collidedWithFace3.z + collidedWith->boundingBox.z) || (colliderFace4.z - collision->boundingBox.z < collidedWithFace3.z + collidedWith->boundingBox.z && colliderFace4.z - collision->boundingBox.z > collidedWithFace3.z - collidedWith->boundingBox.z);
                                 if (collisionX && collisionZ)
                                 {
+                                    // colliding with ground
                                     collision->collided.y = 1;
-                                    continue; 
+                                    continue;
                                 }
                                 int passed = 0;
                             }
-                             if (colliderFace3.y>collidedWithFace4.y && colliderFace3.y<collidedWithFace3.y)
+                            // check if colliding with ceiling
+                            if (colliderFace3.y > collidedWithFace4.y && colliderFace3.y < collidedWithFace3.y)
                             {
                                 double diffY = colliderFace3.y - collidedWithFace4.y;
                                 double diffZ = colliderFace3.z - collidedWithFace4.z;
                                 if (abs(diffY) > abs(0.01))
                                 {
+                                    // check if partially colliding with ceiling
                                     collision->collided.x = 1;
                                     collision->collided.z = 1;
                                     continue;
                                 }
-                                //check if they are colliding on the x and z axis
+                                // check if they are colliding on the x and z axis
                                 bool collisionX = (colliderFace3.x + collision->boundingBox.x > collidedWithFace4.x - collidedWith->boundingBox.x && colliderFace3.x + collision->boundingBox.x < collidedWithFace4.x + collidedWith->boundingBox.x) || (colliderFace3.x - collision->boundingBox.x < collidedWithFace4.x + collidedWith->boundingBox.x && colliderFace3.x - collision->boundingBox.x > collidedWithFace4.x - collidedWith->boundingBox.x);
-                                bool collisionZ = (colliderFace3.z  + collision->boundingBox.z > collidedWithFace4.z - collidedWith->boundingBox.z && colliderFace3.z + collision->boundingBox.z < collidedWithFace4.z + collidedWith->boundingBox.z) || (colliderFace3.z - collision->boundingBox.z < collidedWithFace4.z + collidedWith->boundingBox.z && colliderFace3.z - collision->boundingBox.z > collidedWithFace4.z - collidedWith->boundingBox.z);
+                                bool collisionZ = (colliderFace3.z + collision->boundingBox.z > collidedWithFace4.z - collidedWith->boundingBox.z && colliderFace3.z + collision->boundingBox.z < collidedWithFace4.z + collidedWith->boundingBox.z) || (colliderFace3.z - collision->boundingBox.z < collidedWithFace4.z + collidedWith->boundingBox.z && colliderFace3.z - collision->boundingBox.z > collidedWithFace4.z - collidedWith->boundingBox.z);
                                 if (collisionX && collisionZ)
                                 {
+                                    // colliding with ceiling
                                     collision->collided.z = 1;
-                                    continue; 
+                                    continue;
                                 }
                                 int passed = 0;
                             }
-                            collision->collided.x = 1;     
+                            collision->collided.x = 1;
                         }
-                        
                     }
                 }
             }
             return;
         }
     };
-
-   
 
 }
