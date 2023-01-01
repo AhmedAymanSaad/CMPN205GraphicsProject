@@ -15,7 +15,7 @@ namespace our {
         position = data.value("position", glm::vec3(0.0f, 0.0f, 0.0f));
         enabled = data.value("enabled", true);
 
-        glm::vec3 attenuationTemp = data.value("attenuation", glm::vec3(0.0f, 0.0f, 0.0f));
+        glm::vec3 attenuationTemp = data.value("attenuation", glm::vec3(1.0f, 1.0f, 1.0f));
         attenuation.constant = attenuationTemp.x;
         attenuation.linear = attenuationTemp.y;
         attenuation.quadratic = attenuationTemp.z;
