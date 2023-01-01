@@ -7,6 +7,9 @@ namespace our {
     // Reads sensitivities & speedupFactor from the given json object
     void LightComponent::deserialize(const nlohmann::json& data){
         if(!data.is_object()) return;
+        // basically: light.type = LightType::DIRECTIONAL;
+        // but from json file
+        // same for all the other variables
         type = data.value("light_type", LightType::DIRECTIONAL);
         diffuse = data.value("diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
         specular = data.value("specular", glm::vec3(0.0f, 0.0f, 0.0f));
@@ -14,6 +17,7 @@ namespace our {
         direction = data.value("direction", glm::vec3(0.0f, 0.0f, 0.0f));
         position = data.value("position", glm::vec3(0.0f, 0.0f, 0.0f));
         enabled = data.value("enabled", true);
+
 
         glm::vec3 attenuationTemp = data.value("attenuation", glm::vec3(1.0f, 1.0f, 1.0f));
         attenuation.constant = attenuationTemp.x;

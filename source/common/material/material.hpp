@@ -52,13 +52,15 @@ namespace our {
         void deserialize(const nlohmann::json& data) override;
     };
 
+    // This material adds 4 uniforms (besides the values from the TintedMaterial and TexturedMaterial)
     class LitMaterial : public TexturedMaterial {
     public:
 
-        glm::vec3 ambient;
-        glm::vec3 diffuse;
-        glm::vec3 specular;
-        float shininess;
+        glm::vec3 ambient;  // used to simulate the ambient light
+        glm::vec3 diffuse;  // used to simulate the diffuse light
+        glm::vec3 specular; // used to simulate the specular light, These 3 values are used to calculate the 
+        // lighting of the object using the Phong lighting model
+        float shininess;    // used to simulate the shininess of the object
 
         void setup() const override;
         void deserialize(const nlohmann::json& data) override;

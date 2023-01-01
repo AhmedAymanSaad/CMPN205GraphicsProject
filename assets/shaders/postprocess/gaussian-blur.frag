@@ -23,6 +23,8 @@ void main(){
     
     vec4 texColor = vec4(0.0); // texture2D(u_texture, vTexCoord)
 
+    // apply gaussian blur by getting the texcoord average of negigbours
+
     texColor += texture2D(tex, tex_coord - 4.0*blurSize) * 0.05;
     texColor += texture2D(tex, tex_coord - 3.0*blurSize) * 0.09;
     texColor += texture2D(tex, tex_coord - 2.0*blurSize) * 0.12;

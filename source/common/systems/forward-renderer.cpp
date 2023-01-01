@@ -214,7 +214,7 @@ namespace our {
             glm::mat4 cameraPosition = camera->getOwner()->getLocalToWorldMatrix();
             command.material->shader->set("camera_position",glm::vec3(cameraPosition[3].x , cameraPosition[3].y , cameraPosition[3].z));
             command.material->shader->set("light_count", light_count);
-            // if lit material
+            // if lit material send material properites
              if(auto litMaterial = dynamic_cast<LitMaterial*>(command.material); litMaterial){
                 command.material->shader->set("material.ambient", litMaterial->ambient);
                 command.material->shader->set("material.diffuse", litMaterial->diffuse);
