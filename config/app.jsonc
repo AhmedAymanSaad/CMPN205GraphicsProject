@@ -57,6 +57,41 @@
                 }
             },
             "materials": {
+                "metal2": {
+                    "type": "lit",
+                    "shader": "lit",
+                    "pipelineState": {
+                        "faceCulling": {
+                            "enabled": false
+                        },
+                        "depthTesting": {
+                            "enabled": true
+                        }
+                    },
+                    "tint": [
+                        0.45,
+                        0.4,
+                        0.5,
+                        1
+                    ],
+                    "ambient": [
+                        0.1,
+                        0.1,
+                        0.1
+                    ],
+                    "diffuse": [
+                        0.3,
+                        0.3,
+                        0.3
+                    ],
+                    "specular": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "shininess": 0.1,
+                    "texture": "glass"
+                },
                 "metal": {
                     "type": "tinted",
                     "shader": "tinted",
@@ -183,8 +218,8 @@
                     "sampler": "default"
                 },
                 "wood": {
-                    "type": "lit",
-                    "shader": "lit",
+                    "type": "textured",
+                    "shader": "textured",
                     "pipelineState": {
                         "faceCulling": {
                             "enabled": true
@@ -200,21 +235,21 @@
                         1
                     ],
                     "ambient": [
-                        0,
-                        0,
-                        0
-                    ],
-                    "diffuse": [
                         0.1,
                         0.1,
                         0.1
+                    ],
+                    "diffuse": [
+                        0.3,
+                        0.3,
+                        0.3
                     ],
                     "specular": [
                         0,
                         0,
                         0
                     ],
-                    "shininess": 0,
+                    "shininess": 0.1,
                     "texture": "wood",
                     "sampler": "default"
                 },
@@ -302,20 +337,20 @@
                     {
                         "type": "Light",
                         "light_type": 0,
-                        "diffuse": [
-                            0.3,
-                            0.3,
-                            0.3
-                        ],
                         "ambient": [
                             0.1,
                             0.1,
                             0.1
                         ],
+                        "diffuse": [
+                            0.5,
+                            0.5,
+                            0.5
+                        ],
                         "specular": [
-                            0.2,
-                            0.2,
-                            0.2
+                            0.5,
+                            0.5,
+                            0.5
                         ],
                         "direction": [
                             1,
@@ -961,6 +996,38 @@
                         "type": "Mesh Renderer",
                         "mesh": "cube",
                         "material": "wood"
+                    },
+                    {
+                        "type": "Collision",
+                        "boundingBox": [
+                            0.4,
+                            0.4,
+                            0.4
+                        ]
+                    }
+                ]
+            },
+            {
+                "position": [
+                    -10,
+                    -0.5,
+                    0
+                ],
+                "rotation": [
+                    0,
+                    0,
+                    0
+                ],
+                "scale": [
+                    0.4,
+                    0.4,
+                    0.4
+                ],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "cube",
+                        "material": "metal2"
                     },
                     {
                         "type": "Collision",
