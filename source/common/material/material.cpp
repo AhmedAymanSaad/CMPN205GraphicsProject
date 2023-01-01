@@ -68,7 +68,8 @@ namespace our {
     }
 
 
-
+    // This function should call the setup of its parent (TexturedMaterial) and
+    // set the "ambient", "diffuse", "specular" and "shininess" uniforms to the values in the member variables
     void LitMaterial::setup() const {
         TexturedMaterial::setup();
         // shader uniform value setting
@@ -78,6 +79,8 @@ namespace our {
         shader->set("shininess", shininess);
     }
 
+    // This function read the lit material data from a json object, calls the parent's deserialize function first 
+    // to get the texture and sampler
     void LitMaterial::deserialize(const nlohmann::json& data){
         TexturedMaterial::deserialize(data);
         if(!data.is_object()) return;
