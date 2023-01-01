@@ -139,6 +139,7 @@ namespace our {
         // Since the entity owns its components, they should be deleted alongside the entity
         ~Entity(){
             //TODO: (Req 8) Delete all the components in "components".
+            int x =1;
             for(const auto& component : components){
                 delete component;
             }

@@ -50,9 +50,11 @@ namespace our {
         // save the texture to the textureUnit GL_TEXTURE0
         glActiveTexture(GL_TEXTURE0);
         texture->bind();
-        sampler->bind(textureUnit);
+        if (sampler != nullptr){
+            sampler->bind(textureUnit);
         // setting the uniform variable "tex" to the textureUnit
-        shader->set("tex", textureUnit);
+            shader->set("tex", (int)textureUnit);
+        }
         //TODO: (Req 7) Write this function
     }
 
@@ -63,6 +65,26 @@ namespace our {
         alphaThreshold = data.value("alphaThreshold", 0.0f);
         texture = AssetLoader<Texture2D>::get(data.value("texture", ""));
         sampler = AssetLoader<Sampler>::get(data.value("sampler", ""));
+    }
+
+
+
+    void LitMaterial::setup() const {
+        TexturedMaterial::setup();
+        // shader uniform value setting
+        shader->set("ambient", ambient);
+        shader->set("diffuse", diffuse);
+        shader->set("specular", specular);
+        shader->set("shininess", shininess);
+    }
+
+    void LitMaterial::deserialize(const nlohmann::json& data){
+        TexturedMaterial::deserialize(data);
+        if(!data.is_object()) return;
+        ambient = data.value("ambient", glm::vec3(0.0f, 0.0f, 0.0f));
+        diffuse = data.value("diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
+        specular = data.value("specular", glm::vec3(0.0f, 0.0f, 0.0f));
+        shininess = data.value("shininess", 0.0f);
     }
 
 }
