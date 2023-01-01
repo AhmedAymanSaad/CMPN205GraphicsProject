@@ -47,7 +47,6 @@ struct Light {
     vec3 diffuse;
     vec3 specular;
     vec3 ambient;
-    bool enabled;
     // Position is used for point and spot lights. Direction is used for directional and spot lights.
     vec3 position, direction;
     // Attentuation factors are used for point and spot lights.
@@ -65,6 +64,9 @@ struct Light {
 uniform Material material;
 uniform Light lights[MAX_LIGHT_COUNT];
 uniform int light_count;
+
+uniform vec4 tint;
+uniform sampler2D tex;
 
 out vec4 frag_color;
 
@@ -113,5 +115,5 @@ void main() {
         accumulated_light += (diffuse + specular) * attenuation + ambient;
     }
 
-    frag_color = fsin.color * vec4(accumulated_light, 1.0f);
+    frag_color = fsin.color * vec4(accumulated_light, 1.0f) * tint * texture(tex, fsin.tex_coord);
 }
