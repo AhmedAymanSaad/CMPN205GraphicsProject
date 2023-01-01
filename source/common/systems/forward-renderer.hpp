@@ -4,6 +4,7 @@
 #include "../components/camera.hpp"
 #include "../components/mesh-renderer.hpp"
 #include "../asset-loader.hpp"
+#include "../components/light.hpp"
 
 #include <glad/gl.h>
 #include <vector>
@@ -32,6 +33,7 @@ namespace our
         // These are two vectors in which we will store the opaque and the transparent commands.
         // We define them here (instead of being local to the "render" function) as an optimization to prevent reallocating them every frame
         std::vector<RenderCommand> opaqueCommands;
+        std::vector<Light
         std::vector<RenderCommand> transparentCommands;
         // Objects used for rendering a skybox
         Mesh* skySphere;

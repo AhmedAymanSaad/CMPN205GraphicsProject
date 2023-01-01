@@ -9,7 +9,6 @@
 #include <json/json.hpp>
 
 namespace our {
-
     // This is the base class for all the materials
     // It contains the 3 essential components required by any material
     // 1- The pipeline state when drawing objects using this material
@@ -55,10 +54,15 @@ namespace our {
 
     class LitMaterial : public TexturedMaterial {
     public:
-        glm::vec3 ambient;
-        glm::vec3 diffuse;
-        glm::vec3 specular;
-        float shininess;
+
+        struct MaterialProperties {
+            glm::vec3 ambient;
+            glm::vec3 diffuse;
+            glm::vec3 specular;
+            float shininess;
+        };
+        
+        MaterialProperties matTemp;
 
         void setup() const override;
         void deserialize(const nlohmann::json& data) override;

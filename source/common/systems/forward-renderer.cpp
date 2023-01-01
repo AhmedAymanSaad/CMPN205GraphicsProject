@@ -168,6 +168,16 @@ namespace our {
             return false;
         });
 
+        int light_count = 0;
+        for(auto entity: world->getEntities()){
+            if(auto light = entity->getComponent<LightComponent>(); light){
+                lights.push_back(light);
+            }
+        }
+        light_count = lights.size();
+        
+        
+
         //TODO: (Req 9) Get the camera ViewProjection matrix and store it in VP
         glm::mat4 VP = camera->getProjectionMatrix(windowSize) * camera->getViewMatrix();
         
@@ -196,8 +206,16 @@ namespace our {
         for ( auto command : opaqueCommands) {
             command.material->setup();
             command.material->shader->set("transform", VP * command.localToWorld);
+            command.material->shader->set("object_to_world", command.localToWorld);
+            command.material->shader->set("object_to_world_inv_transpose", glm::inverse(command.localToWorld));
+            command.material->shader->set("view_projection", VP);
+            glm::mat4 cameraPosition = camera->getOwner()->getLocalToWorldMatrix();
+            command.material->shader->set("camera_position",glm::vec3(cameraPosition[3].x , cameraPosition[3].y , cameraPosition[3].z));
+            command.material->shader->set("light_count", light_count);
             command.mesh->draw();
         }
+
+
         
         // If there is a sky material, draw the sky
         if(this->skyMaterial){
@@ -238,6 +256,12 @@ namespace our {
         for ( auto command : transparentCommands) {
             command.material->setup();
             command.material->shader->set("transform", VP * command.localToWorld);
+            command.material->shader->set("object_to_world", command.localToWorld);
+            command.material->shader->set("object_to_world_inv_transpose", glm::inverse(command.localToWorld));
+            command.material->shader->set("view_projection", VP);
+            glm::mat4 cameraPosition = camera->getOwner()->getLocalToWorldMatrix();
+            command.material->shader->set("camera_position",glm::vec3(cameraPosition[3].x , cameraPosition[3].y , cameraPosition[3].z));
+            command.material->shader->set("light_count", light_count);
             command.mesh->draw();
         }
         
